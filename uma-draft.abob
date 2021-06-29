@@ -10,7 +10,7 @@ requesting                             authorization resource resource
     |            |ticket, authz server location         |         |
     |            |<-------------------------------------|         |
     |            |  RPT Request                  	    |         |    
-	|            |  # resource: importent/data 
+	|            |  # resource: important/data 
 					# actions: see             
 					# audience:rs.com          
     |            |with permission ticket                |         |        
