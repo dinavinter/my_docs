@@ -1,0 +1,147 @@
+@startuml
+
+skinparam componentStyle uml2
+
+title Contact Relationship Collect
+!$user  = David Smith
+!$email= "david@mail.com"
+!$name = "david"
+!$name1 = "dudi"
+!$sub= "newsletter"
+!$sub2= "deals"
+!$contactEmail = { "type": "email", "email" : "$email" }
+      actor "dudi"
+
+package "Anonymous" {
+    actor "dudi"
+
+    
+    note right
+   {{
+   salt
+   {+
+   <b> Register to $sub
+   Set Your Preferences
+   ()email {{"value   "}}
+   ()phone {{"value   "}}
+   {{"Frequency   "}}
+   {{"Call me Shimon   "}}
+   [Subscribe]
+   }
+   }}
+
+    end note
+}
+package "Email" {
+    actor "dudi"
+    
+    note right
+   {{
+   salt
+   {+
+   <b> Approve $sub 
+   [Approve]
+   }
+   }} 
+    end note
+    
+    note right
+      {{
+      salt
+      {+
+      <b> Subscribe to $sub 
+      [Subscribe]
+      }
+      }}
+
+    end note
+    
+  note right
+          {{
+          salt
+          {+
+          <b> Unsubscribe from $sub 
+          <a> Unsubscribe 
+          }
+          }}
+    
+  end note
+}
+
+package "Register" {
+     actor "dudi"
+
+   note right
+   {{
+   salt
+   {+
+   <b> Register to Website
+   {{"User Name   "}}
+   {{"Password   "}}
+   --------
+   Subscribe to $sub2
+   ()email {{"value   "}}
+   ()phone {{"value   "}}
+   {{"Frequency   "}}
+   {{"Call me Shimon   "}}
+   [Register]
+   }
+   }}
+
+    end note
+}
+
+package "Register" {
+     actor "dudi"
+
+   note right
+   {{
+   salt
+   {+
+   <b> Register to Website
+   {{"Phone Numer   "}}
+   --------
+   Subscribe to $sub2
+   ()email {{"value   "}}
+   ()phone {{"value   "}}
+   {{"Frequency   "}}
+   {{"Call me Shimon   "}}
+   [Register]
+   }
+   }}
+
+    end note
+}
+
+
+cloud Internet {
+}
+ 
+node "Gigya" {
+    [Business Logic]
+    [Data Access] as DA  
+    interface Process  as Math
+    interface "IItems" as Items
+    
+    note left of [Business Logic]
+        A note can also
+        be on several lines
+        like this one
+    end note
+    
+} 
+
+database "PostgreSQL\n" {
+
+    [Stored Procs]
+}
+GUI -down-> Internet
+Internet -down-( Math
+
+[Business Logic] -up- Math : Web Services
+DA -up- Items  : .Net
+[Business Logic] --( Items
+DA .. [Stored Procs]
+
+@enduml
+

@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+node "Gigya" {
+    [Business Logic]
+    [Data Access] as DA  
+    interface Process  as Math
+    interface "IItems" as Items
+    
+    note left of [Business Logic]
+        A note can also
+        be on several lines
+        like this one
+    end note
+    
+} 
+
+node "Gigya" {
+    [Business Logic]
+    [Data Access] as DA  
+    interface Process  as Math
+    interface "IItems" as Items
+    
+    note left of [Business Logic]
+        A note can also
+        be on several lines
+        like this one
+    end note
+    
+} 
+
+@enduml
+
+@startmindmap
+!$foo = { "company": "Skynet", "employees" : [
+  {"name" : "alice", "salary": 100 },
+  {"name" : "bob", "salary": 50} ]
+}
+
+* The salary of  
+!foreach $emp in $foo.employees
+  ** **$emp.name** 
+  *** is 
+  **** **$emp.salary**
+!endfor
+@endmindmap

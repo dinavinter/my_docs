@@ -8,6 +8,6 @@
 Alice -> Bob : $a
 Alice -> Bob : $ab
 Alice -> Bob : $cd
-Alice -> Bob : $ef
+Alice -> Bob : $ef $foo 
 Alice -> Bob : Do you know **$foo.name** ?
 @enduml

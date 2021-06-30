@@ -1,0 +1,310 @@
+@startuml
+
+'https://qiita.com/ogomr/items/7f18dd94432a1d72ea22
+!$sub= "newsletter"
+!$sub2= "deals"
+  
+
+ 
+
+!$newsletter = { 
+ "type":"newsletter", 
+ "fields": [
+{"name":"name", "value":"Dudi"  }, 
+{"name":"frequency", "value":"daily" , "options":["daily" , "weekly", "monthly"]} ,
+{"name":"language", "value":"French"} 
+  ] ,
+  "channel": { "value":"$channel" , "options":["email" , "phone", "whatsapp", "telegram", "address"]},
+  "terms":  [
+  {"name":"terms_news", "value":"true"}
+  ]
+}
+
+
+!$deals = { 
+ "type":"deals",
+ "fields": [
+{"name":"name", "value":"Dudi"  }, 
+{"name":"frequency", "value":"daily" , "options":["daily" , "weekly", "monthly"]} ,
+{"name":"language", "value":"French"} 
+  ] ,
+  "channel": { "value":"$channel" , "options":["email" , "phone", "whatsapp", "telegram", "address"]},
+  "terms":  [
+  {"name":"terms_news", "value":"true"}
+  ]
+}
+!$contact_email = { 
+    "type":"email",
+    "fields": [
+    {"name":"email", "value":"david@mail.com"  }
+    , 
+   {"name":"terms_email", "value":"true"} ,
+   {"name":"terms_share", "value":"true"}  
+] }
+
+!$contact_phone = { 
+ "type":"phone", 
+ "fields": [
+ {"name":"phone", "value":"06745453"  }
+ , 
+{"name":"terms_phone", "value":"true"} ,
+{"name":"terms_share", "value":"true"}  
+] }
+
+!$contact_whatsapp = { 
+ "type":"whatsapp", 
+ "fields": [
+ {"name":"phone", "value":"06745453"  },
+ {"name":"token", "value":"xsdsfff"  } , 
+{"name":"terms_whatsapp", "value":"true"} ,
+{"name":"terms_share", "value":"true"}  
+] }
+
+!$contact_telegram = { 
+ "type":"telegram",
+ "fields": [
+ {"name":"nickname", "value":"niciNock"  },
+ {"name":"group", "value":"hotnews"  } , 
+{"name":"terms_share", "value":"true"}  
+] }
+
+
+!$contact_address = { 
+ "type":"address", 
+ "fields": [
+ {"name":"city", "value":"Miami"  },
+ {"name":"street", "value":"Avenue "  } , 
+ {"name":"terms_shipping", "value":"true"}  
+] }
+
+
+ !$channel =null 
+
+ 
+!unquoted procedure SALT($x, $asVar)
+ !local $var=$asVar 
+"{{
+salt
+skinparam dpi 120 
+%invoke_procedure("_"+$x)
+}}" as  $var 
+!endprocedure
+
+
+!unquoted procedure chhosechannel($value)
+  !$channel =$value
+  choose-down->choose  $channel 
+  -down-> SALT(channel, $channel) 
+  -down-> SALT(thanks, thanks)   
+!endprocedure
+
+
+!unquoted procedure draw($x) 
+   %invoke_procedure("_"+$x) 
+!endprocedure
+
+  
+ 
+  !procedure option($option, $value) 
+     !if $option == $value
+        (X)$option 
+        !else
+        ()$option
+     !endif  
+  !endprocedure
+   
+  
+  !procedure checkbox($value) 
+     !if $value
+        [X] 
+        !else
+        []
+     !endif  
+  !endprocedure
+ 
+ 
+ 
+ !procedure  frequency($frequency)  
+     Frequency | { 
+              option("daily", $frequency.value)  
+              option("weekly", $frequency.value)   
+            }  
+ !endprocedure
+   !procedure text($title, $field )
+         $title | "     $field     "
+    !endprocedure
+  !procedure name($field)
+       text(Name ,$field.value)
+  !endprocedure 
+    !procedure email($field)
+         Email | "$field.value"
+    !endprocedure  
+    !procedure phone($field)
+             Phone | "$field.value"
+   !endprocedure  
+   
+   !procedure language($field)
+       Language | "$field.value"
+  !endprocedure
+    
+  !procedure  terms_news($field)  
+       checkbox($field.value) Agree to get annoyed
+  !endprocedure
+  
+  !procedure  terms_phone($field)  
+       checkbox($field.value) Agree to get sms
+  !endprocedure
+    !procedure  terms_whatsapp($field)  
+         checkbox($field.value) I agree to save my WAPP details
+    !endprocedure
+
+  !procedure  terms_email($field)  
+         checkbox($field.value) Agree to get emails 
+  !endprocedure
+    
+   !procedure  terms_share($field)  
+           checkbox($field.value) Agree to share my data 
+   !endprocedure
+  
+   !procedure terms_shipping($field)  
+      checkbox($field.value)  I agree to the shipment terms of service
+  !endprocedure
+ 
+ 
+   !procedure  field( $field)  
+    !if %function_exists($field.name)
+        %invoke_procedure($field.name, $field)
+        !else
+        text($field.name, $field.value)
+        
+     !endif   
+    !endprocedure 
+    
+!procedure fields( $field)  
+      !foreach $f in $field
+            field($f)  
+      !endfor
+!endprocedure 
+
+!procedure wizard($tab=newsletter, $tabs)
+{+
+    {/ <b>$tab | Fullscreen | Behavior | Saving } 
+        draw($tab)
+    }
+}
+
+!endprocedure
+ !procedure  _newsletter(  ) 
+  { 
+     channel($channel, $newsletter.channel.options)  
+     subscription_pref($newsletter) 
+
+  }
+ !endprocedure 
+
+ !procedure  _deals()  
+   {   
+       subscription_pref($deals) 
+   }
+ !endprocedure 
+
+ 
+    !procedure  subscription($subscription)  
+         draw($subscription) 
+     !endprocedure 
+     
+     !procedure  subscription_pref($subscription)  
+          channel($channel, $subscription.channel.options)   
+          {^"<b>Subscription Preferences ($subscription.type)" 
+           fields($subscription.fields)  
+           fields($subscription.terms)   
+        } 
+    !endprocedure 
+
+  !procedure  channel($channel = null, $options)  
+    {^"<b>Channel  Preferences"   
+            {/
+            !foreach $o in $options
+                 !if $o == $channel
+                  <b> $o |
+                  !else
+                    $o |
+                 !endif
+                  
+             !endfor 
+           
+
+           }   
+        !if $channel != null
+         {{ %invoke_procedure($channel+"_channel") }}
+        !else
+                   ...
+                   ...
+                   ...
+      !endif
+      }
+       
+  !endprocedure
+
+    !procedure  email_channel()   
+       fields($contact_email.fields) 
+    !endprocedure  
+    
+     !procedure  whatsapp_channel()   
+         fields($contact_whatsapp.fields) 
+      !endprocedure  
+      
+  !procedure  phone_channel()   
+          fields($contact_phone.fields)   
+  !endprocedure
+
+       
+  !procedure  telegram_channel()   
+          fields($contact_telegram.fields)   
+  !endprocedure
+
+   !procedure  address_channel()   
+           fields($contact_address.fields)   
+   !endprocedure
+
+ 
+ !procedure _channel()
+{+ 
+
+    {
+        subscription($subscription.type) 
+        [Subscribe]
+    }
+ 
+}
+!endprocedure
+ 
+!procedure _thanks()
+{+ 
+    {
+  
+         <b>Thank You For Subscribing!
+         We have sent you an email to approve your subscriptions
+        [Ok]
+    }
+ 
+}
+!endprocedure
+ 
+
+skinparam monochrome true
+
+title Contact Relationship Collect  
+left to right direction
+!$subscription = $newsletter 
+ (*) --> SALT(channel, choose) 
+ chhosechannel(phone)
+ chhosechannel(email) 
+ chhosechannel(whatsapp) 
+ chhosechannel(telegram) 
+ chhosechannel(address) 
+!$subscription = $deals 
+ (*) --> SALT(channel, choosedeals) 
+
+
+@enduml

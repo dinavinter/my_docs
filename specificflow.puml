@@ -1,0 +1,237 @@
+
+@startuml
+!$user  = David Smith
+!$email= "david@mail.com"
+!$phone= "050898792"
+!$name = "david"
+!$name1 = "dudi"
+!$sub= "Newsletter"
+!$sub2= "deals"
+!$contactEmail = { "type": "email", "email" : "$email" }
+
+!$emailNewsletterSubscription = { "name":"Dudi", "frequency":"daily" , "Language": "French" }  
+!$newsletterSchema = { "fields": [{"name":"Name", "value":"Dudi"  }, {"name":"frequency", "value":"daily"} ] }
+ 
+!$newsletter = { 
+ "fields": [
+{"name":"name", "value":"Dudi"  }, 
+{"name":"frequency", "value":"daily"} ,
+{"name":"language", "value":"French"} ,
+{"name":"terms_news", "value":"true"}
+] }
+
+!$contact_email = { 
+ "fields": [
+ {"name":"email", "value":"david@mail.com"  }
+ , 
+{"name":"terms_email", "value":"true"} ,
+{"name":"terms_share", "value":"true"}  
+] }
+
+!$contact_phone = { 
+ "fields": [
+ {"name":"email", "value":"david@mail.com"  }
+ , 
+{"name":"terms_email", "value":"true"} ,
+{"name":"terms_share", "value":"true"}  
+] }
+
+
+ !$flow = "email"
+ 
+!$user  = David Smith
+!$email= "david@mail.com"
+!$phone= "050898792"
+!$name = "david"
+!$name1 = "dudi"
+!$sub= "Newsletter"
+!$sub2= "deals"
+!$contactEmail = { "type": "email", "email" : "$email" }
+
+!$emailNewsletterSubscription = { "name":"Dudi", "frequency":"daily" , "Language": "French" }  
+!$newsletterSchema = { "fields": [{"name":"Name", "value":"Dudi"  }, {"name":"frequency", "value":"daily"} ] }
+ 
+!$newsletter = { 
+ "fields": [
+{"name":"name", "value":"Dudi"  }, 
+{"name":"frequency", "value":"daily"} ,
+{"name":"language", "value":"French"} ,
+{"name":"terms_news", "value":"true"}
+] }
+
+!$contact_email = { 
+ "fields": [
+ {"name":"email", "value":"david@mail.com"  }
+ , 
+{"name":"terms_email", "value":"true"} ,
+{"name":"terms_share", "value":"true"}  
+] }
+
+!$contact_phone = { 
+ "fields": [
+ {"name":"email", "value":"david@mail.com"  }
+ , 
+{"name":"terms_email", "value":"true"} ,
+{"name":"terms_share", "value":"true"}  
+] }
+
+
+ !$flow = "email"
+ 
+!unquoted procedure SALT($x)
+ !local $var=$x+$flow
+"{{
+salt
+skinparam dpi 120 
+%invoke_procedure("_"+$x)
+}}" as  $var 
+!endprocedure
+
+!unquoted procedure draw($x) 
+ %invoke_procedure("_"+$x) 
+!endprocedure
+
+ !procedure  newsletter( ) 
+ {
+  {^"<b>$sub Preferences"
+   Name | "Dudi " 
+  Frequency | {(X)daily | 
+                 ()weekly  
+               }
+    Language | {{"French   "}} 
+        [X] Agree to get annoyed   
+        } 
+    } 
+  }
+ !endprocedure 
+ 
+   !procedure  channel()  
+     {^"<b>Channel Preferences" 
+       {()email  |  ()phone | ()telegram }    
+     }
+   !endprocedure
+   
+     !procedure  email_channel($email =  $email)  
+       {^"<b>Channel Preferences"  
+           {(X)email  |  ()phone | ()telegram }  
+        
+        email($contact_email.fields)
+ 
+       }
+     !endprocedure  
+     
+     !procedure  email( $email = $email) 
+      { 
+          {Email |  | {{"$email"}}} 
+         [X] Agree to get emails  
+         [X] Agree to share my email 
+
+      }
+      !endprocedure 
+      !procedure  email_channel($email =  $email)  
+            {^"<b>Channel Preferences"  
+                {(X)email  |  ()phone | ()telegram }  
+             
+             email($email)
+      
+            }
+          !endprocedure  
+          
+        
+        !procedure  phone_channel($phone =  $phone)  
+            {^"<b>Channel Preferences"  
+                 {()email  |  (X)phone | ()telegram }  
+                 phone($phone)
+                   
+            }
+          !endprocedure
+      
+          !procedure  phone( $phone = $phone) 
+           { 
+              {phone |  | {{"$phone"}} } 
+      
+              [X] Agree to get sms  
+              [X] Agree to share my phone 
+              
+           }
+           !endprocedure
+      
+      !procedure _choose()
+      {+
+          {
+              newsletter()   
+              channel(  ) 
+              [<color:#9a9a9a>Subscribe]
+          }
+         
+      }
+      !endprocedure
+      
+      
+      !procedure _mm()
+       {+
+          {
+              newsletter()   
+              channel(  ) 
+              [<color:#9a9a9a>Subscribe]
+          }
+         
+      }
+      !endprocedure
+      !procedure _email()
+      {+ 
+      
+          {
+              newsletter()  
+      
+              email_channel() 
+              
+              [Subscribe]
+          }
+       
+      }
+      !endprocedure
+      !procedure _phone()
+      {+ 
+          {
+              newsletter()  
+              phone_channel() 
+              [Subscribe]
+          }
+       
+      }
+      !endprocedure
+      
+      !procedure _thanks()
+      {+ 
+          {
+        
+               <b>Thank You For Subscribing!
+               We have sent you an email to approve your subscriptions
+              [Ok]
+          }
+       
+      }
+      !endprocedure
+      
+      
+      
+      skinparam groupInheritance 3
+      skinparam componentStyle uml1
+      left to right direction
+      
+      title Contact Relationship Collect 
+       (*) --> SALT(choose) 
+       -down->choose $flow  
+       -down-> SALT($flow ) 
+      -down-> SALT(thanks)  
+      
+      !$flow ="phone"
+       (*) --> SALT(choose) 
+       -down->choose  $flow 
+       -down-> SALT($flow) 
+       -down-> SALT(thanks)  
+      
+       
+      
+      @enduml

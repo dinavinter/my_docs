@@ -1,0 +1,205 @@
+@startuml
+'https://plantuml.com/object-diagram
+skinparam monochrome true
+set namespaceSeparator ::
+
+object Account
+object Contact
+object Subscription
+object Consent
+'object DigitalIdentity 
+!$user  = David Smith
+!$email= "david@mail.com"
+!$name = "david"
+!$name1 = "dudi"
+
+!$contactId = email_$email
+!$contact  = email_$email
+
+ !$sub= "newsletter"
+ !$sub2= "deals"
+  !$sub3= "movies"
+
+
+!procedure email( $value) 
+  contact('email', $value)
+    class contact::$value { 
+      .. email ..
+      Email Consent : {} 
+    }
+!endprocedure
+
+!procedure  phone( $value) 
+  contact('phone', $value)
+!endprocedure
+
+!procedure whatsapp( $value) 
+  contact('whatsapp', $value)
+!endprocedure
+
+!procedure telegram( $value) 
+  contact('telegram', $value)
+!endprocedure
+
+
+!procedure  contact($type, $value) 
+  class contact::$value {
+    value: $value 
+    type: $type    
+    General Profile: {} 
+    General Consent : {}
+    subscription :   [
+             $sub : verified
+             $sub2 : verified
+           ] 
+  }
+!endprocedure
+
+!procedure  account($type, $contact, $name) 
+  class account::$name {
+  .. metadata ..
+       type: $type 
+      uid:$name
+      
+  .. profile ..
+    name:$name  
+  .. contacts ..
+     | contact: $contact  
+     --| verified: false 
+    
+  .. subscriptions ..
+    subscription: $sub - $contact
+                    
+ 
+  }
+!endprocedure
+
+!procedure  newsletter( $contact, $frequency= 'daily') 
+  !local $id = $contact _ $sub
+  sub($sub, $contact, $frequency)
+  class subscription::$id {
+      .. newsletter ..
+      consent: adult metrical
+  }
+ !endprocedure
+ 
+ !procedure  deals( $contact, $frequency= 'daily') 
+   !local $sub = 'deals'
+   !local $id = $contact _ $sub
+   sub($sub, $contact, $frequency)
+   class subscription::$id {
+       .. deals ..
+       consent: targeted metrical
+   }
+  !endprocedure
+  
+
+!procedure  sub( $sub, $contact, $frequency= 'daily') 
+  !local $id = $contact _ $sub
+  class subscription::$id {
+    uuid : $contact _ $sub
+    frequency: $frequency 
+    contact: $contact 
+    isSubscribe: true
+  }
+ !endprocedure
+
+!procedure  consent( $terms= 'TOI', $contact,   $account) 
+  class consent::$terms {
+    account: $account
+    terms: $terms
+  }
+!endprocedure
+
+
+
+email( $email)
+newsletter( $email) 
+deals( $email)  
+account('lite', $email, $name1 )
+account('full', $email, $name )
+consent( 'Terms',$email, $name )
+ 
+'subscription::$sub-->contact::$email
+'account::$name -->contact::$email
+'account::$name1 -->contact::$email
+!procedure status()
+ note right of Alice 
+        $email --> $name  
+ end note
+ !endprocedure 
+ 
+Subscription->Contact:$email
+Account -->Contact:$email
+Consent-->Account:$name1
+!$email = 'sdsd'
+status()
+ 
+
+'!procedure $msg($source, $destination)
+'  $source --> $destination
+'!endprocedure
+'
+'!procedure $init_class($name)
+'  class $name {
+'    $addCommonMethod()
+'  }
+'!endprocedure
+'
+'
+'!function  id($contact)
+'!$result = "<b>"+ $contact.$type+"</b>"
+'!log Calling bold function with $text. The result is $result
+'!return $result
+'!endfunction
+'
+'!procedure $id($contact) 
+' $contact.$type
+'!endprocedure
+'
+'!function id2($id) 
+'!return  2
+'!endfunction
+'
+'!procedure $addCommonMethod()
+'  toString()
+'  hashCode()
+'!endprocedure
+'
+'!procedure defaulttest($x, $y="DefaultY", $z="DefaultZ")
+'note right of Alice
+'  x = $x
+'  y = $y
+'  z = $z
+'end note
+'!endprocedure
+'
+'$init_class("foo1")
+'$init_class("foo2")
+'$msg("foo1", "foo2")
+'
+'map Contact{
+'email: $email
+'type : 'email'
+'}
+
+
+
+ 
+'Contact --> Subscription::USA
+' Alice -> Bob : 1. **$name** should be empty
+'
+'!$name = "Charlie"
+'Alice -> Bob : 2. **$name** should be Charlie
+'
+'!$name = "David"
+'Alice -> Bob : 3. **$name** should be David
+'
+'!$name = "Ethan"
+'Alice -> Bob : 4. **$name** should be David
+
+'
+'
+'defaulttest(1, 2, 3)
+'defaulttest(1)
+ @enduml
