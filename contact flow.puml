@@ -92,12 +92,21 @@
  
  
  !procedure goto_contact($from, $contact, $other_options)
-   $from-down-> choose $contact.type  
+   !$choosevar= choose+$contact.type  
+   $from-down->"
+                          {{
+                          salt
+                          {+
+                            contact_options($contact, $other_options)
+                          }
+                          }}
+                
+                          " as  $choosevar  
    -down-> "
            {{
            salt
            {+
-             contact_details($contact, $other_options)
+             contact($contact)
            }
            }}
  
@@ -106,9 +115,15 @@
    -down-> SALT(thanks)      
  !endprocedure
  
+ 
   
- !procedure  contact_options($contact, $options)  
-      {/
+ !procedure  contact_options($contact, $options)
+     !local $choice= "Choose Channel"
+     !if $contact != null 
+        !$choice = $contact.type 
+     !endif
+      {* $choice 
+         $choice |  
                 !foreach $o in $options
                      !if $o == $contact.type
                       <b> $o |
@@ -117,9 +132,17 @@
                      !endif
                       
                  !endfor  
-    }   
+    }  
+    
 
   !endprocedure
+  
+    !procedure  contact($contact)  
+      {^"<b> [$contact.type]"  
+        {{  fields($contact.fields)  }}  
+     }
+  
+    !endprocedure
 
   !procedure  contact_details($contact, $options)  
     {^"<b>Channel  Preferences" 
@@ -278,7 +301,7 @@ skinparam dpi 120
               {+
                <b>Lite  Registration  
                 subscription($subscriptions) 
-               
+                 [   Subscribe   ]
               }
              }}
    
