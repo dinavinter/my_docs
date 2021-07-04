@@ -27,7 +27,8 @@
  "fields": [
 {"name":"name", "value":"Davidus"  }, 
 {"name":"frequency", "value":"daily" , "options":["daily" , "weekly", "monthly"]} ,
-{"name":"language", "value":"Spanish"} 
+{"name":"language", "value":"Spanish"} ,
+{"name":"interests", "value":"Pets"} 
   ] ,
   "channel": { "value":"null" , "options":["email" ,   "telegram" ]},
   "terms":  [
@@ -327,6 +328,24 @@ skinparam dpi 120
 !endprocedure
 
 
+!procedure _subscribe()
+ {+  
+     [Subscribe to Newsletter]
+ } 
+!endprocedure
+
+!procedure  subscribe($subscription)
+!local  $var=Subscribe+$subscription 
+  "
+  {{
+  salt
+  {+ 
+  [Subscribe to $subscription]
+  }
+  }}
+  " as $var  
+!endprocedure
+
 skinparam monochrome true
 
 title Contact Relationship Collect  
@@ -334,7 +353,9 @@ left to right direction
 
 
  !$channel_options=  $newsletter.channel.options  
- (*) --> lite($newsletter) 
+ (*)-right->subscribe(Newsletter) 
+  -right->lite($newsletter) 
+  
  -down-> SALT(choose) 
   goto_contact(choose, $contact_phone, $channel_options   )   
   goto_contact(choose,$contact_email, $channel_options ) 
@@ -343,7 +364,8 @@ left to right direction
   goto_contact(choose,$contact_address, $channel_options ) 
  !$channel_options=  $deals.channel.options  
 
- (*) --> lite($deals) 
+ (*)-left->subscribe(Deals)  
+  -left->lite($deals) 
 
   -down-> SALT(choose) 
 @enduml
