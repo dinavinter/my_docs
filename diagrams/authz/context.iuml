@@ -1,0 +1,33 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Jeans 4 You - Gigya Authorization Model   
+
+Person(role_expert, "Role Expert", "A business implementor of the application.")
+Person(support, "Customer Support", "Support customer requests")
+Person_Ext(customer, "Buyer", "A customer of the store, with personal accounts.")
+Person_Ext(customer_2, "Customer", "A customer of the store, ask support for help")
+System(app_system, "Jeans 4 You", "Allows customers to view information about their preferences, and buy jeans.")
+System(service_system, "Jeans 4 You Checkout", "Provide backed logic for application")
+
+System_Ext(auth_system, "Gigya AuthN", "Provide authentication and identifications")
+System_Ext(um, "Gigya User Management", "Stores all of the core information about customers, accounts, rate, favorites etc.")
+System_Ext(authz, "Gigya AuthZ", "Stores information about the system permissions, in an ACL format.")
+
+Rel(customer, app_system, "Buy")
+Rel(app_system, service_system, "Uses")
+Rel_Back(customer, auth_system, "Authenticate Interactions")
+Rel(customer, auth_system, "")
+Rel(auth_system, um, "Uses")
+Rel_L(role_expert, authz, "Update Permissions")
+Rel_U(support, um, "View Account Information")
+Rel_Neighbor(app_system, auth_system, "Authenticate", "session")
+Rel_Neighbor(service_system, um, "Rate account")
+Rel_Neighbor(um, authz, "Authorize")
+Rel_Neighbor(customer_2, support, "call")
+
+@enduml
