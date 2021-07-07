@@ -1,0 +1,36 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define ICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/
+ 
+!include ICONS/govicons/user_suit.puml
+!include ICONS/font-awesome-5/user_tie.puml
+!include ICONS/material/dialer_sip.puml
+ 
+LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
+ 
+Container_Ext(vsg, "Voice Streaming Gateway", "gRPC server", "Manages call sessions and handle voice streaming.")
+Container_Ext(console, "AiCall Console", "Web app", "Provides UI for retrieving statistics.")
+ContainerDb_Ext(db, "Database", "Redis, MySQL", "Stores activities, events, and call information")
+ 
+Container_Boundary(ai_call_interface, "AiCall Interface") {
+ 
+  Component(signin, "Sign In Controller", "Spring MVC REST Controller", "Allows users to sign in to AiCall Console.")
+  Component(query, "Query Controller", "Spring MVC REST Controller", "Allows users to Retrieves statistics data with query.")
+  Component(log, "Event Log Controller", "Spring MVC REST Controller", "Allows other components to store their events logs to DB.")
+  Component(auth, "Auth Component", "Spring Bean", "Provides functionality related to authentication")
+  Component(db_control, "DB Controller", "Spring Bean", "Provides functionality related to DB access.")
+ 
+}
+ 
+Rel(vsg, log, "Makes API calls to", "JSON/HTTPS")
+Rel_R(console, signin, "Makes API calls to", "JSON/HTTPS")
+Rel_R(console, query, "Makes API calls to", "JSON/HTTPS")
+Rel(signin, auth, "Uses")
+Rel(query, db_control, "Uses")
+Rel(log, db_control, "Uses")
+Rel(auth, db_control, "Uses")
+Rel(auth, db_control, "Uses")
+Rel(db_control, db, "Reads from and writes to", "JDBC")
+ 
+@enduml

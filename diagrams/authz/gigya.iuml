@@ -1,0 +1,50 @@
+@startuml
+
+node "Customer Application" {
+  [Application] 
+  [Service API] 
+ 
+
+}
+
+node "Administration" {
+ 
+'  [Policy Engine] as [PlainId]
+
+  [Console]
+
+}
+
+node "Gigya API" {
+  [gigya/account] as [Resource]
+  [gigya/permissions] as [Admin Api]
+
+}
+
+node "Authentication" {
+  [gigya/example/authN] as [AuthN]
+  [gigya/console/authN] as [AuthN Admin]
+
+}
+
+node "Authorization" {
+  [ACL] as [AuthZ]
+
+}
+
+actor "User"
+actor "Admin"
+
+
+[User].d.[Application]
+[User]..[AuthN]
+
+[Admin].d.[Console]
+[Console]..[Admin Api]
+[Admin]..[AuthN Admin]
+[Admin Api]..[AuthZ]
+[Application]..[Resource]
+[Application].[Service API]
+[Service API]..[Resource]
+[Resource]..[AuthZ]
+@enduml

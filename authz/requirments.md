@@ -6,45 +6,55 @@
 Manage Gigya Apis authorization
 
 #### Access Control List 
-- ACL hierarchies 
-    - API/ API Group
-    - Known roles (developers/ admins/ social)
+- ACL inherent  
+    - API
+    - API Group 
+    - Known roles (everyone/ developers/ admins/ social)
     - Custom groups manged by customer 
+    * diagram
     
 - ACL can be assigned to:
     - Admin user
     - Application key
-    - Session token    
+    - Session Token 
+    - Anonymous
+       
 
 - ACL API format 
     - Resource API (accounts.getAccountInfo)
     - REST API 
     - JSON 
-       
+ 
+ namespace, endpoint
+    *example
+           
 - ACL can grant or ungrant access to  
     - API
-    - API's parameters
-    - API's parameters values 
-    - JSON response fields
-    - JSON request fields
-    - Skip RBA roles
-    - Set a default value to parameter ( ? )
-   
+        - Endpoint
+        - HTTP Method
+        - API's parameters
+        - API's parameters values 
+    
+    - Claims (e.g. Skip RBA roles, search highrate users ) 
+  
+    - Entity Permissions (account)
+        - JSON response fields
+        - JSON request fields
+
 #### Scope
-- **
+- Global
 - Partner
 - Site
      
 
 #### Management
--  Developer can create and edit API ACL 
--  Developer can assign ACL to a known group (except developers)
+-  Developer can assign ACL to a known group (except developers) --*** 
 -  Admins can assign ACL to groups in a scope of a specific partner or site
 -  Admins can assign only ACL that is included in their permissions
--  Admins can can create and edit custom ACLs 
+-  Admins can create and edit custom ACLs 
       
 - Auto provisioning
-    -  Auto provisioning of ACL via saml login to console 
+- Auto provisioning of ACL via saml login to console 
 
 ###  Customer Provisioning Authorization [b2b, b2e, b2c]
 

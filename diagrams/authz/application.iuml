@@ -1,0 +1,121 @@
+@startuml "techtribesjs"
+ 
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/angular.puml
+!include DEVICONS/java.puml
+!include DEVICONS/msql_server.puml
+!include FONTAWESOME/users.puml
+
+' uncomment the following line and comment the first to use locally
+' !include C4_Container.puml
+
+skinparam monochrome true
+skinparam wrapWidth 200
+skinparam maxMessageSize 200
+
+!unquoted procedure Boundary($alias, $label, $tags="", $link="")
+Boundary($alias, $label, "", $tags, $link)
+!endprocedure
+
+
+!unquoted procedure API($alias, $label,$subtitle="", $tags="", $link="" )
+Container($alias, $label, $subtitle, $tags, $link)
+
+!endprocedure
+
+
+!unquoted procedure Application($alias, $label,$subtitle="", $tags="", $link="")
+Container($alias, $label, $subtitle, $tags, $link)
+!endprocedure
+ 
+
+LAYOUT_TOP_DOWN()
+'LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
+
+
+Person_Ext(anonymous_user, "Anonymous User")
+Person(aggregated_user, "Loggedin User")
+Person(administration_user, "Administration User")
+
+'Boundary(cloud, "Cloud"){
+    Boundary(admin_app, "Administration"){
+    Application(permission_app, "Permissions Management", "Console Page", "Edit policies for applications and employees")
+    Application(ida, "Identity Management", "Console Page", "Edit account information")
+
+}
+    Boundary(client_app, "Client Application"){
+
+       Application(application_service, "Application Service", "example.com/api", "")
+      Application(web_app, "Web Application", "example.com")
+        Application(web_app_page, "Subscriptions Page", "example.com/subscriptions", "")
+
+
+}
+ Boundary(authz, "Gigya Authz"){
+
+    API(authz_api, "Authorization", "Check Access", "")
+
+    ContainerDb(authz_mng, "Permissions", "Acl", "APIs, Claims, Groups, etc.")
+'    Container(authz_mng, "Permissions Management", "ACL and groups management", "")
+'Rel_L(authz_mng, acl_db, "Read/ Write", "")
+
+}
+ Boundary(gigya, "Gigya Resources"){
+   
+
+ 
+    API(lite_api, "Anonymous API", "anonymous data collector", "")
+
+ 
+
+    API(account_api, "Account API", "user management", "")
+
+    API(admin_api, "Admin API", "configuration", "")
+    }
+'System_Ext(account, "Account")
+'System_Ext(github, "GitHub")
+'System_Ext(blogs, "Blogs")
+
+'}
+
+
+
+Rel(anonymous_user, web_app_page, "Subscribe", "")
+Rel(aggregated_user, web_app, "Edit Profile", "Logged in as Jon")
+Rel(administration_user, permission_app, "Edit Permissions", "Logged in as admin")
+Rel(administration_user, ida, "Edit Account", "Logged in as admin")
+
+Rel(application_service, account_api, "Read/ Write", "application key")
+Rel(web_app_page, lite_api, "Write", "Anonymous")
+Rel(web_app, account_api, "Read/ Write", "Session")
+Rel(permission_app, admin_api, "Read/ Write", "user key")
+Rel(ida, account_api, "Read/ Write", "user key")
+
+Rel(account_api, authz_api, "Authorize", "accounts/profile")
+Rel(admin_api, authz_api, "Authorize ", "admin/permissions")
+Rel(lite_api, authz_api, "Authorize ", "anonymous/write")
+Rel_L(admin_api, authz_mng, "Read/ Write", "")
+Rel_R(authz_api, authz_mng, "Read", "")
+
+'login
+
+'  Application(authn_app_console, "Login to Console", "gigya.console.com/login", "")
+' Application(authn_app, "Login", "example.login.com/login", "")
+'   API(authn_api, "Login API", "Authentication Methods", "")
+
+'Rel_D(administration_user, authn_app_console, "Login to Console", "Creds")
+'Rel_D(aggregated_user, authn_app, "Login to example.com", "Creds")
+'Rel(authn_app, authn_api, "Login ", "identifier, risks")
+'Rel(authn_app_console, authn_api, "Login ", "identifier, risks")
+'
+'Rel(authn_api, authz_api, "Authorize ", "anonymous/login")
+
+ 
+'Lay_D(admin_api, account_api)
+'Lay_D(account_api, lite_api)
+
+@enduml
