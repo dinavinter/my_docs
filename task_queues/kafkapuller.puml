@@ -1,5 +1,5 @@
 @startuml
-partition "**process** Consumer Per WH" {
+partition "**Consumer Per WH** " {
 
 :Input Event;
 :produce event|
