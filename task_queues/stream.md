@@ -21,7 +21,7 @@
 #### On Failure
 > Elastic Consumer  
 - Wait a little bit 
-- Pull head from **Elastic**
+- Pull head from **Elastic** from failing offset
 - Send batch
 - Commit offset to **Elastic**
 
@@ -44,7 +44,7 @@
 #### On Failure
 > Kafka Consumer 
 - Wait a little bit 
-- Pull head from **Kafka**  
+- Pull head from **Kafka** from failing offset  
 - Send batch
 - Commit offset to **Kafka**
 
