@@ -1,0 +1,102 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+
+
+title Authorization B2B Model   
+HIDE_STEREOTYPE()
+!$COLOR_A_5 = "#7f3b08"
+!$COLOR_A_4 = "#b35806"
+!$COLOR_A_3 = "#e08214"
+!$COLOR_A_2 = "#fdb863"
+!$COLOR_A_1 = "#fee0b6"
+!$COLOR_NEUTRAL = "#f7f7f7"
+!$COLOR_B_1 = "#d8daeb"
+!$COLOR_B_2 = "#b2abd2"
+!$COLOR_B_3 = "#8073ac"
+!$COLOR_B_4 = "#542788"
+!$COLOR_B_5 = "#2d004b"
+!$COLOR_REL_LINE = "#8073ac"
+!$COLOR_REL_TEXT = "#8073ac"
+
+'AddElementTag("customer", $borderColor="#d73027")
+AddElementTag("v1.1", $fontColor="#d73027")
+'AddElementTag("gigya_system", $fontColor="orange")
+AddElementTag("gigya_system",  $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_2)
+AddElementTag("customer", $bgColor=$COLOR_A_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_2)
+
+'AddElementTag("customer", $fontColor=$COLOR_NEUTRAL, $borderColor="#ffffbf")
+AddElementTag("client_system", $bgColor=$COLOR_A_4, $fontColor=$COLOR_NEUTRAL )
+AddElementTag("employee", $bgColor=$COLOR_A_5, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_1, $shadowing="true")
+AddElementTag("fallback", $bgColor="#444444")
+
+'UpdateElementStyle("customer", $bgColor=$COLOR_A_5, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_1)
+'UpdateElementStyle("external_person", $bgColor=$COLOR_B_5, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_1)
+'UpdateElementStyle("gigya_system", $bgColor=$COLOR_A_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_2)
+'UpdateElementStyle("gigya_system", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_2)
+'UpdateRelStyle($lineColor=$COLOR_REL_LINE, &textColor=$COLOR_REL_TEXT)
+
+
+Person(role_expert, "Role Expert", "A business implementor of the application.", $tags="employee")
+Person(support, "Customer Support", "Support customer requests", $tags="employee")
+Person_Ext(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
+Person_Ext(gm, "Group Manager", "A customer of the store, with personal accounts, allowed to mange a shopping group." , $tags="customer")
+Person_Ext(go, "Group Owner", "A customer of the store, with personal accounts, own a shopping group.", $tags="customer")
+Person_Ext(customer_2, "Customer", "A customer of the store, ask support for help" , $tags="customer")
+
+System(app_system, "Jeans 4 You", "Allows customers to view information about their preferences, and create group shopping to buy jeans.", $tags="client_system")
+System(app_system_silver, "Jeans 4 You Silver", "Allows to get spacial discounts.", $tags="client_system")
+System(service_system, "Jeans 4 You Rating Service", "Rate loyal customers upon checkout", $tags="client_system")
+
+System_Ext(auth_system, "Gigya J4U AuthN", "Provide authentication and identifications", $tags="gigya_system")
+System_Ext(auth_admin, "Gigya Console AuthN", "Provide authentication and identifications", $tags="gigya_system")
+
+System_Ext(um, "Gigya User Management", "Stores all of the core information about customers, accounts, rate, favorites etc.", $tags="gigya_system")
+System_Ext(authz, "Gigya AuthZ", "Stores information about the system permissions, in an ACL format.", $tags="gigya_system")
+System_Ext(authz_b2b, "B2C/B AuthZ Provider", "Stores policies, roles, assets, also dynamic assets and roles.", $tags="gigya_system")
+System_Ext(invitation, "Invitations System", "", $tags="gigya_system")
+
+Rel(gm, app_system, "View Group Members")
+Rel(app_system, um, "Get Accounts", "authz token")
+Rel(app_system, authz_b2b, "authz")
+Rel_L(go, authz_b2b,"Update Group Policy", "Allow Manger To view Members\nAllow Rated users to view silver page")
+ 
+ Rel(go, invitation, "Invite Manger")
+ Rel_U(role_expert, invitation, "Invite Owner")
+ Rel(invitation, um, "Update Group")
+ 
+Rel(customer, app_system_silver, "View")
+Rel(app_system_silver, authz_b2b, "authz")
+
+ Rel_U(go, auth_system, "Authenticate")
+'Rel_Back(go, auth_system, "")
+
+'Rel_Back(app_system, authz_b2b, "authz token")
+Rel(authz_b2b, um, "get account attributes")
+Rel(gm, auth_system, "Authenticate")
+'Rel_Back(gm, auth_system, "")
+Rel(customer, auth_system, "Authenticate")
+'Rel_Back(customer, auth_system, "")
+
+'Rel(auth_system, um, "Uses")
+Rel_L(role_expert, authz, "Update Permissions", Allow owner to update group policy)
+Rel_U(support, um, "View Account Information")
+Rel_Neighbor(app_system, auth_system, "Authenticate", "session")
+Rel_Neighbor(service_system, um, "Rate account")
+Rel_Neighbor(um, authz, "Authorize")
+Rel_Neighbor(customer_2, support, "call")
+
+
+Rel_Neighbor(role_expert, auth_admin, "Authenticate")
+Rel_Neighbor(support, auth_admin, "Authenticate")
+
+'group relation
+'System(group, "Shopping Group") 
+'Rel_L(customer, group, "belongs")
+'Rel_Neighbor(gm, group, "mange")
+' Rel_Neighbor(go, group, "own")
+
+SHOW_LEGEND()
+
+@enduml

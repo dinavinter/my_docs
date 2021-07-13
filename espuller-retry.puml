@@ -1,0 +1,98 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+skinparam monochrome true
+state Puller : LifecycleParticipant\n
+
+state  "Service Lifecycle" as Lifecycle {
+  [*] --> startup 
+  startup -r-> Puller  
+}
+
+state  "Kafka" as Kafka {
+  [*] --> ES 
+  state ES: all kafa event
+}
+ 
+  state "Orleans Stream" as Puller {
+       onStart -r-> kfPull
+       kfPull--> kafka
+       kafka -> kfEvents
+       kfEvents -> kfPull
+       kfEvents-> kfWait
+       kfWait ->commit
+       state "wait for Dispatcher"   as kfWait
+       
+       state kfEvents : streamId\nevents
+       commit-u-> kafka
+       
+        state "commit offset" as commit:  purge events from cache
+       state "pull" as kfPull
+       state "events" as kfEvents
+  }
+
+ 
+
+  state "ES Puller" as es {
+       Reminder->esPull
+        esPull--> elastic
+       elastic -d-> esEvents
+       
+       state esEvents : streamId\nevents
+       esCommit-u-> elastic 
+              elastic-> esWait
+              esWait ->esCommit
+              esWait -> esPull
+              state "wait for Dispatcher"   as esWait
+
+        state "commit offset" as esCommit: save offset of streamId
+       
+       state "pull" as esPull
+      state "events" as esEvents
+
+  }
+  
+
+  
+state Dispatcher{
+'OnSuccess-u-> commit
+
+state "OnNext"   <<entrypoint>>
+state "OnNextPull" <<entrypoint>>
+state state <<choice>> 
+state "Elastic Pull Reminder" as SetEsPullReminder
+state "Downtime Mode" as Downtime  
+state "Stream Mode" as StreamMode  
+state "Discard"  <<join>>
+state "Save Offset" as offset  
+state --> Send : [Stream Mode]
+state --> Discard : [Downtime Mode]
+state "offset check" as check <<choice>>  
+state fail <<choice>> 
+
+OnNextPull -> Send
+OnNext ->  state
+Discard-d-> offset 
+offset-> hades
+Send-> fail
+fail->Downtime: [On Failure]
+fail-d->check: [On Success]
+Downtime-> SetEsPullReminder
+SetEsPullReminder-d->Discard
+check--> StreamMode: [offset == last sent]
+
+state Discard{
+}
+}
+
+
+    
+state Dispatcher:OnNext ( batch  ){
+
+
+}
+
+      esEvents --> OnNextPull  
+    kfEvents -d-> OnNext  
+
+@enduml

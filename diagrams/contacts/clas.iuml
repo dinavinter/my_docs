@@ -1,0 +1,55 @@
+ @startuml
+
+ 
+  
+  class contact::email {
+    email: email4@email.com 
+    contact-uid: dsdksjd
+    channel: email    
+    data: custom  
+    consent
+    subscription
+   }
+   
+     class subscription::subscription {
+       id: newsletter
+       data: custom
+       contact: contact-uuid
+       consent (nice to have)
+       
+      }
+   
+    class account::full {
+         uuid;
+         uid;
+         consent;
+         contact ids[
+         contact-email-uuid,
+         email:contact-uuid1,
+         
+         ]  
+         
+ }
+         
+   class emarsys::full {
+          external-uid: emarsys-uid
+          email: contact-email
+          phone: contact-phone
+          whatsup: contact-whatsappid     
+         
+ }
+ 
+    class aggregator::full {
+           external-uid: emarsys-uid
+           contact
+            id
+            data
+            subscriptions
+        
+           email: contact-email
+           phone: contact-phone
+           whatsup: contact-whatsappid     
+          
+  }
+   
+   @enduml

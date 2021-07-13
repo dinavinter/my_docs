@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+skinparam monochrome true
+state Puller : LifecycleParticipant\n
+
+state  "Service Lifecycle" as Lifecycle {
+  [*] --> startup 
+  startup -r-> Puller  
+}
+
+
+ 
+  state "Puller" as Puller {
+       onStart -r-> pull
+       pull--> kafka
+       kafka -> events
+       events-> wait
+       wait -> pull
+       state events : streamId\nevents
+       
+       state commit
+       state wait: for how long?
+  }
+
+ 
+    events -d-> Dispatcher  
+    Dispatcher-> commit
+
+@enduml

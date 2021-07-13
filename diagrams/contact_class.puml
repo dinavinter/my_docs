@@ -45,6 +45,7 @@ object Consent
 !procedure  contact($type, $value) 
   class contact::$value {
     value: $value 
+    uid: dsdksjd
     type: $type    
     General Profile: {} 
     General Consent : {}
@@ -123,17 +124,17 @@ consent( 'Terms',$email, $name )
 'subscription::$sub-->contact::$email
 'account::$name -->contact::$email
 'account::$name1 -->contact::$email
-!procedure status()
- note right of Alice 
-        $email --> $name  
- end note
- !endprocedure 
+'!procedure status()
+' note right of Alice 
+'        $email --> $name  
+' end note
+' !endprocedure 
  
-Subscription->Contact:$email
-Account -->Contact:$email
-Consent-->Account:$name1
-!$email = 'sdsd'
-status()
+'Subscription->Contact:$email
+'Account -->Contact:$email
+'Consent-->Account:$name1
+'!$email = 'sdsd'
+'status()
  
 
 '!procedure $msg($source, $destination)

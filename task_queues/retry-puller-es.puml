@@ -1,0 +1,100 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+skinparam monochrome true
+state Puller : LifecycleParticipant\n
+
+state  "Service Lifecycle" as Lifecycle {
+  [*] --> startup 
+  startup -r-> Puller  
+}
+
+state  "Kafka" as Kafka {
+  [*] --> ES 
+  state ES: all kafa event
+}
+ 
+  state "Orleans Stream" as Puller {
+  
+      state "wait for Dispatcher"   as kfWait
+      state kfEvents : streamId\nevents
+      state "purge cache" as commit:  purge events from cache
+      state "pull" as kfPull
+      state "events" as kfEvents
+         
+       onStart -r-> kfPull
+       kfPull--> kafka
+       kafka -> kfEvents
+       kfEvents -> kfPull
+       kfEvents-> kfWait
+       kfWait ->commit
+       commit-u-> kafka
+       
+          
+  }
+
+ 
+
+  state "ES Puller" as es {
+
+       state esEvents : streamId\nevents
+       state "wait for Dispatcher"   as esWait
+       state "commit offset" as esCommit: save offset of streamId 
+       state "pull" as esPull
+       state "events" as esEvents     
+     
+        Reminder-->esPull
+        esPull-> elastic
+        elastic -d-> esEvents
+        esEvents -> esWait
+        esWait -u-> esCommit 
+        esCommit -> esPull 
+
+  }
+  
+
+  
+state Dispatcher{
+'OnSuccess-u-> commit
+
+state "On Next Healthy" as   OnNext <<entrypoint>>
+state "On Next Retry" as OnNextPull <<entrypoint>>  
+state "Pull Reminder" as SetEsPullReminder: from current offset\nretry attempt = attempt++
+state "Pull Reminder" as SetEsPullReminder2: from current offset + 1\nretry attempt = 1
+state "Set To  Downtime Mode" as Downtime : hades state
+state "Set To Healthy Mode" as HealthyMode : hades state 
+state "Save Offset" as offset :hades  
+state "Discard"  <<join>>
+
+state CKstate <<choice>>
+CKstate --> Send : [Stream Mode]
+CKstate -> Discard : [Downtime Mode]
+
+state c_offset <<choice>>  
+c_offset  --> HealthyMode: [offset == last sent]
+
+state c_fail <<choice>>  
+c_fail-> Downtime: [On Failure]
+c_fail-d->c_offset: [On Success]
+
+state c_retry <<choice>>  
+ c_retry -> SetEsPullReminder:[retry attempt < max retry ]
+ c_retry -d-> SetEsPullReminder2:[retry attempt > max retry ]
+
+
+OnNextPull -> Send
+OnNext ->  offset
+offset ->  CKstate
+Send-> c_fail
+Downtime-> c_retry
+
+state Discard{
+}
+}
+
+ 
+
+ esEvents --> OnNextPull  
+ kfEvents -d-> OnNext  
+
+@enduml

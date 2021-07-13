@@ -1,0 +1,41 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+skinparam monochrome true
+state Puller : LifecycleParticipant\n
+
+state  "Service Lifecycle" as Lifecycle {
+  [*] --> startup 
+  startup -r-> Puller: A until C  
+}
+
+state  "Kafka" as Kafka {
+  [*] --> ES 
+  state ES: all kafa event
+}
+ 
+  state "Puller" as Puller {
+       onStart -r-> pull
+       pull--> elastic
+       elastic -d-> events
+       commit-u-> elastic
+
+       state events : streamId\nevents
+       state commit
+       state elastic
+                             note left 
+                             sequence by webhookurl
+                             A
+                             until C
+                             endnote
+
+       state elastic: 
+       state "commit offset" as commit: mark batch as executed
+  }
+
+ 
+    events -d-> Dispatcher  
+    Dispatcher-u-> commit
+    
+state Dispatcher:OnNext ( batch  )
+@enduml

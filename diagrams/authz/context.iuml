@@ -5,7 +5,7 @@
 
 LAYOUT_WITH_LEGEND()
 
-title Jeans 4 You - Gigya Authorization Model   
+title Gigya Authorization Model   
 
 Person(role_expert, "Role Expert", "A business implementor of the application.")
 Person(support, "Customer Support", "Support customer requests")
