@@ -6,7 +6,7 @@ skinparam monochrome true
   state Consumer{
  
   state "Wake Up" as WakeUp <<entrypoint>>
-  state Send: Send WH to test service url
+  state Send
 
   state c_fail <<choice>>  
  
