@@ -2,6 +2,8 @@
 'https://plantuml.com/state-diagram
 
 skinparam monochrome true
+
+
 state Puller : LifecycleParticipant\n
 
 state  "Service Lifecycle" as Lifecycle {
@@ -61,10 +63,11 @@ state "Pull Reminder" as SetEsPullReminder2: from current offset + 1\nretry atte
 state "Set To  Downtime Mode" as Downtime : hades state
 state "Set To Healthy Mode" as HealthyMode : hades state 
 state "Save Offset" as offset :hades  
-state "Discard"  <<join>>
+state "Discard"  
+state new <<join>>  
 
 state CKstate <<choice>>
-CKstate --> Send : [Stream Mode]
+CKstate --> new : [Stream Mode]
 CKstate -> Discard : [Downtime Mode]
 
 state c_offset <<choice>>  
@@ -78,20 +81,18 @@ state c_retry <<choice>>
  c_retry -> SetEsPullReminder:[retry attempt < max retry ]
  c_retry -d-> SetEsPullReminder2:[retry attempt > max retry ]
 
-
-OnNextPull -> Send
+OnNextPull -> new
+new -> Send
 OnNext ->  offset
 offset ->  CKstate
 Send-> c_fail
 Downtime-> c_retry
 
-state Discard{
-}
 }
 
  
 
  esEvents --> OnNextPull  
  kfEvents -d-> OnNext  
-
+}
 @enduml

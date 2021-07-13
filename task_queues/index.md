@@ -1,1 +1,4 @@
-![uncached image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.github.com/plantuml/plantuml-server/master/src/main/webapp/resource/test2diagrams.txt)
+
+
+![uncached image](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/dinavinter/my_docs/main/task_queues/retry-puller.puml)
+

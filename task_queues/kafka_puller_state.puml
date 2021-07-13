@@ -1,0 +1,63 @@
+@startuml
+skinparam monochrome true
+ 
+
+ 
+  state Consumer{
+ 
+  state "Wake Up" as WakeUp <<entrypoint>>
+  state Send: Send WH to test service url
+
+  state c_fail <<choice>>  
+ 
+  state "Retry" as Downtime {
+    state Wait: [by retry power]
+    state c_retry <<choice>>  
+    state next <<exitpoint>>   
+
+     state Discard   {    
+           state "Send To Failed" as toFail
+           state "Set Next offset" as Next  
+
+           toFail-> Next
+
+     } 
+
+     c_retry -> Discard:[retry attempt < max retry ]
+     c_retry -d-> IncreaseRetry:[retry attempt > max retry ]
+     IncreaseRetry-> Wait
+     Wait-d->next
+     Discard->next
+
+  }
+ 
+  
+  WakeUp ->  Read 
+  Read -l->  Buffer
+  Read -l->  Send
+  Buffer -> Read 
+  Send -> c_fail
+  c_fail -> Downtime: [On Failure]
+  c_fail -d->Commit: [On Success]
+  Commit -d->Read
+
+  next->Read
+  }
+  
+  state Producer {
+  state  ConsumerID: Webhook URL
+    [*] -> OnNext
+    OnNext-> ConsumerID
+    ConsumerID -d-> WakeUp
+
+  }
+  
+  
+state  "Service Lifecycle" as Lifecycle {
+state "Get Stale Consumers" as GetStaleConsumers
+  [*] -> startup 
+  startup -> GetStaleConsumers  
+  GetStaleConsumers-d-> WakeUp
+}
+
+@enduml
