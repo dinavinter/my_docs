@@ -30,13 +30,23 @@ Person(support, "Customer Support", "Support customer requests", $tags="employee
 Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
 Person(customer_2, "Customer", "A customer of the store, ask support for help", $tags="customer")
 System(app_system, "Jeans 4 You", "Allows customers to view information about their preferences, and buy jeans.", $tags="client_system")
+System(app_system_silver, "Jeans 4 You Silver", "Allows to get spacial discounts.", $tags="client_system")
 System(service_system, "Jeans 4 You Checkout", "Provide backed logic for application", $tags="client_system")
 
 System(auth_system, "Gigya AuthN", "Provide authentication and identifications", $tags="gigya_system")
+System(auth_admin, "Gigya Console AuthN", "Provide authentication and identifications", $tags="gigya_system")
 System(um, "Gigya User Management", "Stores all of the core information about customers, accounts, rate, favorites etc.", $tags="gigya_system")
+System(invitation, "Invitations System", "", $tags="gigya_system")
 System(authz, "Gigya AuthZ", "Stores information about the system permissions, in an ACL format.", $tags="gigya_system")
+System_Ext(authz_b2b, "B2C/B AuthZ Provider", "Stores policies, roles, assets, also dynamic assets and roles.", $tags="gigya_system")
 
- 
+Person(support, "Customer Support", "Support customer requests", $tags="employee")
+Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
+Person(gm, "Group Manager", "A customer of the store, with personal accounts, allowed to mange a shopping group." , $tags="customer")
+Person(go, "Group Owner", "A customer of the store, with personal accounts, own a shopping group.", $tags="customer")
+Person(customer_2, "Customer", "A customer of the store, ask support for help" , $tags="customer")
+  
+
 SHOW_LEGEND()
 
 @enduml

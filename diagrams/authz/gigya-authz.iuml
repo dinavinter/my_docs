@@ -1,0 +1,27 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+!include https://raw.githubusercontent.com/dinavinter/my_docs/main/diagrams/authz/actors.iuml
+' !include actors.iuml
+
+title Gigya Authorization Model   
+
+ 
+Rel(customer, app_system, "Buy")
+Rel(app_system, service_system, "Uses")
+Rel_Back(customer, auth_system, "Authenticate Interactions")
+Rel(customer, auth_system, "")
+Rel(auth_system, um, "Uses")
+Rel_L(role_expert, authz, "Update Permissions")
+Rel_U(support, um, "View Account Information")
+Rel_Neighbor(service_system, um, "Rate account")
+Rel_Neighbor(um, authz, "Authorize")
+Rel_Neighbor(customer_2, support, "call")
+
+
+SHOW_LEGEND()
+ 
+
+@enduml
+'Rel_Neighbor(app_system, auth_system, "Authenticate", "session")
