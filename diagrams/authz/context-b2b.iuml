@@ -10,48 +10,50 @@ title Authorization B2B Model
 HIDE_STEREOTYPE()
 
  
-Rel(gm, app_system, "View Group Members")
-BiRel_L(gm, auth_system, "Authenticate" )
-
-Rel_L(go, authz_b2b,"Update Group Policy", "Allow Manger To view Members\nAllow Rated users to view silver page")
-Rel(go, invitation, "Invite Manger")
-BiRel_U(go, auth_system, "Authenticate")
-
+Rel(go, authz_b2b,"Update Group Policy", "Allow Rated users to view silver page")
+Authenticate_Admin(go)
 
 Rel(customer, app_system_silver, "View")
-BiRel(customer, auth_system, "Authenticate")
+Authenticate_Customer(customer )
 
-Rel(app_system, um, "Get Accounts", "authz token")
-Rel(app_system, authz_b2b, "authz")
 
-Rel_U(role_expert, invitation, "Invite Owner")
-Rel_L(role_expert, authz, "Update Permissions", Allow owner to update group policy)
-Rel_Neighbor(role_expert, auth_admin, "Authenticate")
+Rel(role_expert, invitation, "Invite Group Owner")
+Rel_Neighbor(role_expert, authz, "Update Permissions", Allow owner to update group policy)
+Authenticate_Customer(role_expert )
 
 Rel(invitation, um, "Update Group") 
-'Rel_L(invitation, go, "Group Owner Invitation") 
-'Rel_R(invitation, gm, "Group Manager Invitation") 
 
 Rel(app_system_silver, authz_b2b, "authz")
 
-Rel_Neighbor(um, authz, "Authorize")
+Rel(um, authz, "Authorize") 
+Rel(authz_b2b, um, "Get Account Attributes" , "User Rate, Group Role")
+Rel(authz_b2b, authz, "Authorize Group Owner" , "Can Edit Group Policy")
 
-
-Rel(authz_b2b, um, "get account attributes")
-
-Rel_U(support, um, "View Account Information")
+Rel(service_system, um, "Rate User")
  
-Rel_Neighbor(support, auth_admin, "Authenticate")
-
-Rel_Neighbor(customer_2, support, "call")
-
-Rel_Neighbor(service_system, um, "Rate account")
-
 'group relation
 'System(group, "Shopping Group") 
 'Rel_L(customer, group, "belongs")
 'Rel_Neighbor(gm, group, "mange")
 ' Rel_Neighbor(go, group, "own")
+
+'group manager 
+'Rel(go, authz_b2b,"Update Group Policy", "Allow Manger To view Members ")
+'Rel(group_mng_app, accounts, "Get Accounts", "authz token")
+'Rel(accounts, authz, "Authorize") 
+'Rel(group_mng_app, authz_b2b, "authz")
+'Rel(gm, group_mng_app, "View Group Members")
+'BiRel(gm, auth_system, "Authentication Interactions" )
+'Rel(go, invitation, "Invite Manger")
+'Rel_R(invitation, gm, "Group Manager Invitation")  
+
+'mail
+'System_Ext(mail_system, "E-mail system", "Exchange e-mail system.")
+
+'Rel_U(invitation, go, "Group Owner Invitation") 
+'Rel_R(mail_system, go, "Group Owner Invitation") 
+'Rel_U(invitation, mail_system, "Group Owner Invitation") 
+
 
 SHOW_LEGEND()
 hide @unlinked

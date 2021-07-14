@@ -1,3 +1,4 @@
+ 
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
@@ -24,31 +25,60 @@ AddElementTag("client_system", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $
 AddElementTag("customer", $bgColor=$COLOR_A_6, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_6)
 AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_7)
 
+'  Boundary(client_app, "Client Application"){
+    System(app_system, "Jeans 4 You", "Allows customers to view information about their preferences, and buy jeans.", $tags="client_system")
+    System(group_mng_app, "Jeans 4 You Group App", "Allows customer group's member management", $tags="client_system")
+    System(app_system_silver, "Jeans 4 You Silver", "Allows to get spacial discounts.", $tags="client_system")
+    System(service_system, "Jeans 4 You Checkout", "Provide backed logic for application", $tags="client_system")
+'}
 
-Person(role_expert, "Role Expert", "A business implementor of the application.", $tags="employee")
-Person(support, "Customer Support", "Support customer requests", $tags="employee")
-Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
-Person(customer_2, "Customer", "A customer of the store, ask support for help", $tags="customer")
-System(app_system, "Jeans 4 You", "Allows customers to view information about their preferences, and buy jeans.", $tags="client_system")
-System(group_mng_app, "Jeans 4 You Group App", "Allows customer group's member management", $tags="client_system")
-System(app_system_silver, "Jeans 4 You Silver", "Allows to get spacial discounts.", $tags="client_system")
-System(service_system, "Jeans 4 You Checkout", "Provide backed logic for application", $tags="client_system")
-
-System(auth_system, "Gigya AuthN", "Provide authentication and identifications", $tags="gigya_system")
-System(auth_admin, "Gigya Console AuthN", "Provide authentication and identifications", $tags="gigya_system")
-System(um, "Gigya User Management", "Stores all of the core information about customers, accounts, rate, favorites etc.", $tags="gigya_system")
-System(invitation, "Invitations System", "", $tags="gigya_system")
-System(authz, "Gigya AuthZ", "Stores information about the system permissions, in an ACL format.", $tags="gigya_system")
-System_Ext(authz_b2b, "B2C/B AuthZ Provider", "Stores policies, roles, assets, also dynamic assets and roles.", $tags="gigya_system")
-System(accounts, "Account Service", "Provide data about customers.", $tags="gigya_system")
-
-Person(support, "Customer Support", "Support customer requests", $tags="employee")
-Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
-Person(gm, "Group Manager", "A customer of the store, with personal accounts, allowed to mange a shopping group." , $tags="customer")
-Person(go, "Group Owner", "A customer of the store, with personal accounts, own a shopping group.", $tags="customer")
-Person(customer_2, "Customer", "A customer of the store, ask support for help" , $tags="customer")
   
+  
+'  Boundary(gigya, "Gigya Resources"){
 
+    System(um, "Gigya User Management", "Stores all of the core information about customers, accounts, rate, favorites etc.", $tags="gigya_system")
+    System(accounts, "Account Service", "Provide data about customers.", $tags="gigya_system")
+    System(invitation, "Invitations System", "", $tags="gigya_system")
+'}
+
+ 
+' Boundary(authz_b, "Gigya Authz"){
+
+    System(authz, "Gigya AuthZ", "Stores information about the system permissions, in an ACL format.", $tags="gigya_system")
+    System_Ext(authz_b2b, "B2C/B AuthZ Provider", "Stores policies, roles, assets, also dynamic assets and roles.", $tags="gigya_system")
+'}
+
+
+' Boundary(enduser, "Customers"){
+  
+    Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
+    Person(customer_2, "Customer", "A customer of the store, ask support for help", $tags="customer")
+    Person(gm, "Group Manager", "A customer of the store, with personal accounts, allowed to mange a shopping group." , $tags="customer")
+    Person(go, "Group Owner", "A customer of the store, with personal accounts, own a shopping group.", $tags="customer")
+    System(auth_system, "Gigya AuthN", "Provide authentication and identifications", $tags="gigya_system")
+
+'}
+
+' Boundary(employee, "Employees"){
+ 
+    Person(role_expert, "Role Expert", "A business implementor of the application.", $tags="employee")
+    Person(support, "Customer Support", "Support customer requests", $tags="employee")
+    System(auth_admin, "Gigya Console AuthN", "Provide authentication and identifications", $tags="gigya_system")
+'}
+
+ 
 SHOW_LEGEND()
+
+!procedure Authenticate($persona, $system)
+BiRel($persona, $system, "Authentication") 
+!endprocedure
+ 
+!procedure Authenticate_Admin($persona)
+Authenticate($persona, auth_admin) 
+!endprocedure 
+
+!procedure Authenticate_Customer($persona)
+Authenticate($persona, auth_system) 
+!endprocedure 
 
 @enduml
