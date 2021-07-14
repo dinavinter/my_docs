@@ -39,6 +39,7 @@ System(um, "Gigya User Management", "Stores all of the core information about cu
 System(invitation, "Invitations System", "", $tags="gigya_system")
 System(authz, "Gigya AuthZ", "Stores information about the system permissions, in an ACL format.", $tags="gigya_system")
 System_Ext(authz_b2b, "B2C/B AuthZ Provider", "Stores policies, roles, assets, also dynamic assets and roles.", $tags="gigya_system")
+System(accounts, "Account Service", "Provide data about customers.", $tags="gigya_system")
 
 Person(support, "Customer Support", "Support customer requests", $tags="employee")
 Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")

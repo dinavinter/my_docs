@@ -19,6 +19,7 @@ Rel_U(support, um, "View Account Information")
 Rel_Neighbor(service_system, um, "Rate account")
 Rel_Neighbor(um, authz, "Authorize")
 Rel_Neighbor(customer_2, support, "call")
+Rel_Neighbor(role_expert, auth_admin, "Authenticate")
 
 
 SHOW_LEGEND()
