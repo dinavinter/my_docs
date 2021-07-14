@@ -21,7 +21,8 @@ Rel_Neighbor(customer_2, support, "call")
 
 
 SHOW_LEGEND()
- 
+hide @unlinked
+
 
 @enduml
 'Rel_Neighbor(app_system, auth_system, "Authenticate", "session")

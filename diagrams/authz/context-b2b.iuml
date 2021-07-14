@@ -4,7 +4,7 @@
 ' !include C4_Context.puml
 !include https://raw.githubusercontent.com/dinavinter/my_docs/main/diagrams/authz/actors.iuml
  '!include actors.iuml
-
+ 
 
 title Authorization B2B Model   
 HIDE_STEREOTYPE()
@@ -54,5 +54,6 @@ Rel_Neighbor(service_system, um, "Rate account")
 ' Rel_Neighbor(go, group, "own")
 
 SHOW_LEGEND()
+hide @unlinked
 
 @enduml
