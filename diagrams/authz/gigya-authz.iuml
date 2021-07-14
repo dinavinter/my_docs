@@ -4,6 +4,7 @@
 ' !include C4_Context.puml
 !include https://raw.githubusercontent.com/dinavinter/my_docs/main/diagrams/authz/actors.iuml
 ' !include actors.iuml
+hide @unlinked
 
 title Gigya Authorization Model   
 
@@ -21,7 +22,6 @@ Rel_Neighbor(customer_2, support, "call")
 
 
 SHOW_LEGEND()
-hide @unlinked
 
 
 @enduml
