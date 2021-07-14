@@ -30,6 +30,7 @@ Person(support, "Customer Support", "Support customer requests", $tags="employee
 Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
 Person(customer_2, "Customer", "A customer of the store, ask support for help", $tags="customer")
 System(app_system, "Jeans 4 You", "Allows customers to view information about their preferences, and buy jeans.", $tags="client_system")
+System(group_mng_app, "Jeans 4 You Group App", "Allows customer group's member management", $tags="client_system")
 System(app_system_silver, "Jeans 4 You Silver", "Allows to get spacial discounts.", $tags="client_system")
 System(service_system, "Jeans 4 You Checkout", "Provide backed logic for application", $tags="client_system")
 
