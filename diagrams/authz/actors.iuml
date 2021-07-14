@@ -1,0 +1,42 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+!$COLOR_A_6 = "#03256C"
+!$COLOR_A_7 = "#1768AC"
+!$COLOR_A_5 = "#558776"
+!$COLOR_A_5 = "#558776"
+!$COLOR_A_4 = "#b35806"
+!$COLOR_A_3 = "#e08214"
+!$COLOR_A_2 = "#fdb863"
+!$COLOR_A_1 = "#fee0b6"
+!$COLOR_NEUTRAL = "#f7f7f7"
+!$COLOR_B_1 = "#d8daeb"
+!$COLOR_B_2 = "#b2abd2"
+!$COLOR_B_3 = "#8073ac"
+!$COLOR_B_4 = "#542788"
+!$COLOR_B_5 = "#2d004b"
+!$COLOR_B_6 = "#9B72AA" 
+!$COLOR_REL_LINE = "#8073ac"
+!$COLOR_REL_TEXT = "#8073ac"
+
+AddElementTag("gigya_system",  $bgColor=$COLOR_B_6, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_6)
+AddElementTag("client_system", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_4 )
+AddElementTag("customer", $bgColor=$COLOR_A_6, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_6)
+AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_7)
+
+
+Person(role_expert, "Role Expert", "A business implementor of the application.", $tags="employee")
+Person(support, "Customer Support", "Support customer requests", $tags="employee")
+Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
+Person(customer_2, "Customer", "A customer of the store, ask support for help", $tags="customer")
+System(app_system, "Jeans 4 You", "Allows customers to view information about their preferences, and buy jeans.", $tags="client_system")
+System(service_system, "Jeans 4 You Checkout", "Provide backed logic for application", $tags="client_system")
+
+System(auth_system, "Gigya AuthN", "Provide authentication and identifications", $tags="gigya_system")
+System(um, "Gigya User Management", "Stores all of the core information about customers, accounts, rate, favorites etc.", $tags="gigya_system")
+System(authz, "Gigya AuthZ", "Stores information about the system permissions, in an ACL format.", $tags="gigya_system")
+
+ 
+SHOW_LEGEND()
+
+@enduml
