@@ -1,7 +1,7 @@
 @startuml "techtribesjs"
  
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-
+ 
 !define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
 !define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
 !include DEVICONS/angular.puml
@@ -14,7 +14,7 @@
 
 skinparam monochrome true
 skinparam wrapWidth 200
-skinparam maxMessageSize 200
+skinparam maxMessageSize 200 
 
 !unquoted procedure Boundary($alias, $label, $tags="", $link="")
 Boundary($alias, $label, "", $tags, $link)
@@ -34,7 +34,6 @@ Container($alias, $label, $subtitle, $tags, $link)
 
 LAYOUT_TOP_DOWN()
 'LAYOUT_AS_SKETCH()
-LAYOUT_WITH_LEGEND()
 
 
 Person_Ext(anonymous_user, "Anonymous User")
@@ -81,8 +80,11 @@ Person(administration_user, "Administration User")
 'System_Ext(blogs, "Blogs")
 
 '}
+ Boundary(authn, "Gigya AuthN"){
 
-
+  Application(authn_app_console, "Login to Console", "gigya.console.com/login", "")
+ Application(authn_app, "Login", "example.login.com/login", "")
+}
 
 Rel(anonymous_user, web_app_page, "Subscribe", "")
 Rel(aggregated_user, web_app, "Edit Profile", "Logged in as Jon")
@@ -100,10 +102,11 @@ Rel(admin_api, authz_api, "Authorize ", "admin/permissions")
 Rel(lite_api, authz_api, "Authorize ", "anonymous/write")
 Rel_L(admin_api, authz_mng, "Read/ Write", "")
 Rel_R(authz_api, authz_mng, "Read", "")
+Rel(administration_user, authn_app_console, "Authentication", "")
+Rel(aggregated_user, authn_app, "Login to example.com", "Creds")
 
 'login
 
-'  Application(authn_app_console, "Login to Console", "gigya.console.com/login", "")
 ' Application(authn_app, "Login", "example.login.com/login", "")
 '   API(authn_api, "Login API", "Authentication Methods", "")
 
@@ -116,6 +119,6 @@ Rel_R(authz_api, authz_mng, "Read", "")
 
  
 'Lay_D(admin_api, account_api)
-'Lay_D(account_api, lite_api)
-
+'Lay_D(account_api, lite_api) 
+HIDE_STEREOTYPE()
 @enduml
