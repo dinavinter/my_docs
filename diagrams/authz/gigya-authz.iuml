@@ -20,7 +20,7 @@ Rel(service_system, um, "Rate account")
 Rel(um, authz, "Authorize")
 Rel(customer_2, support, "call")
 Authenticate_Admin(role_expert)
-Authenticate_Admin(support, auth_admin)
+Authenticate_Admin(support)
 
 
 SHOW_LEGEND()
