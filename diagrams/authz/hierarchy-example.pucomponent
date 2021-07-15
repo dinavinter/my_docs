@@ -1,0 +1,95 @@
+ 
+
+@startuml
+skinparam monochrome true
+
+skinparam handwritten true
+ skinparam actorStyle Hollow 
+
+(API Group) .> (API) : Inherit
+(Custom ACL Group) .-> (API Group): Inherit
+(Known Acl) .-> (API Group) : Inherit
+(Custom ACL Group) .-> (Known Acl): Inherit
+User .r.> (Known Acl): Belongs
+Application .r.> (Known Acl): Belongs
+Application .r.> (Custom ACL Group): Belongs
+
+newpage
+title Life Example
+skinparam handwritten true
+
+skinparam  ActorBackgroundColor<< Human >> Gold
+skinparam  ActorBackgroundColor<< Application >> Black
+skinparam actorStyle Hollow 
+skinparam monochrome true
+
+together {
+    Admin << Human >>
+    CS << Human >>
+    :Logedin User: as User << Human >>
+    :Analytics App: as App << Application >>
+}
+ 
+together { 
+    (_account_viewer) << API Group >>
+    (_account_editor) << API Group >>
+    (_policy_update) << API Group >>
+
+}
+together {
+    (_getAccount) << API >>
+    (_getSubscribtions) << API >>
+    (_updatePolicy) << API >>
+}
+
+together {
+    (_admin) << Known ACL Group >>
+    (_social) << Known ACL Group >>
+}
+
+together { 
+(_support) << Custom ACL Group >>
+(_restricted_viewer) << Custom ACL Group >>
+}
+
+(_policy_update) ..> (_updatePolicy) : Inherit
+(_account_viewer) ..> (_getAccount) : Inherit
+(_account_viewer) ..> (_getAccount) : Inherit
+(_account_viewer) ..> (_getSubscribtions) : Inherit
+(_account_editor) ..> (_account_viewer): Inherit
+(_social) ..> (_account_editor) : Inherit
+(_admin) ..> (_policy_update) : Inherit
+(_admin) ..> (_account_editor) : Inherit
+(_support) ..-> (_account_editor): Inherit
+(_restricted_viewer) ..-> (_account_viewer): Inherit
+
+Admin ..>(_admin): belongs
+CS ..>(_support): belongs
+App ..>(_restricted_viewer): belongs
+User ..>(_social): belongs
+
+
+
+@enduml
+
+'skinparam usecase {
+'    BackgroundColor DarkSeaGreen
+'    BorderColor DarkSeaGreen
+'
+'    BackgroundColor<< API Group >> YellowGreen
+'    BorderColor<< API Group >> YellowGreen
+'    BackgroundColor<< API >> LightGray
+'    BorderColor<< API >> LightGray
+'    BackgroundColor<< Custom ACL Group >> SeaGreen
+'    BorderColor<< Custom ACL Group >> SeaGreen
+'    BackgroundColor<< Known ACL Group >> LightSeaGreen 
+'    BorderColor<< Known ACL Group >> LightSeaGreen
+'
+'    ArrowColor Olive
+'    ActorBorderColor black
+'    ActorFontName Courier
+'
+'    ActorBackgroundColor<< Human >> Gold
+'}
+'top to bottom direction
+'left to right direction
