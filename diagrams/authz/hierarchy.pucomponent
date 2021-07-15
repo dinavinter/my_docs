@@ -1,0 +1,17 @@
+
+@startuml
+
+skinparam monochrome true
+
+skinparam handwritten true
+skinparam actorStyle Hollow 
+
+(API Group) .> (API) : Inherit
+(Custom ACL Group) .-> (API Group): Inherit
+(Known Acl) .-> (API Group) : Inherit
+(Custom ACL Group) .-> (Known Acl): Inherit
+User .r.> (Known Acl): Belongs
+Application .r.> (Known Acl): Belongs
+Application .r.> (Custom ACL Group): Belongs
+@enduml
+
