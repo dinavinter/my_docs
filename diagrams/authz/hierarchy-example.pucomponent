@@ -1,5 +1,4 @@
 @startuml
-title Life Example
 skinparam handwritten true
 
 skinparam  ActorBackgroundColor<< Human >> Gold
