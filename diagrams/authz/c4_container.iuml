@@ -24,48 +24,7 @@ AddElementTag("client_system", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $
 AddElementTag("customer", $bgColor=$COLOR_A_6, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_6)
 AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_7)
 
-'  Boundary(client_app, "Client Application"){
-     Container(www, "Web Site", "Container: nginx", "Serves static website assets to customer", $tags="client_system")
-    Container(spa, "SPA", "Container: ReactJS / JavaScript", "Runs application code in customer's browser", $tags="client_system")
-    Container(shop, "Shopping App", "Container: Spring Boot / Java", "Exposes API for shopping and persists shopping cart state", $tags="client_system")
-
-'}
-
-  
-  
-'  Boundary(gigya, "Gigya Resources"){
-
-    Container(um, "Gigya User Management", "Container: Https/ JSON", "Stores all of the core information about customers, accounts, rate, favorites etc.", $tags="gigya_system")
-  '}
-
- 
-' Boundary(authz_b, "Gigya Authz"){
-
- '}
-
-' Boundary(authz_n, "Gigya Authn"){
-   Container(idp, "IDP Authentication ", "Container: Https/ OAuth", "External Providees,provides authentication and identifications", $tags="external_system")
-    Container(gauth, "User AuthN", "Container: Https/ Json", "Exposes API that supports user registration and authentication", $tags="gigya_system")
-    Container(goauth, "OAuth Service", "Container: Https/ OAuth", "Exposes API that provides tokens with information about the user identity and permissions", $tags="gigya_system")
-
-
-'}
-
-' Boundary(enduser, "Customers"){
-  
-    Person(customer, "Buyer", "A customer of the store, with personal accounts.", $tags="customer")
-    Person(customer_2, "Customer", "A customer of the store, ask support for help", $tags="customer")
-    Person(gm, "Group Manager", "A customer of the store, with personal accounts, allowed to mange a shopping group." , $tags="customer")
-    Person(go, "Group Owner", "A customer of the store, with personal accounts, own a shopping group.", $tags="customer")
- 
-'}
-
-' Boundary(employee, "Employees"){
- 
-    Person(role_expert, "Role Expert", "A business implementor of the application.", $tags="employee")
-    Person(support, "Customer Support", "Support customer requests", $tags="employee")
- '}
- 
+' 
 !procedure GAuthN_Container($name)
 Container($name, "User AuthN", "Container: Https/ Json", "Exposes API that supports user registration and authentication", $tags="gigya_system")
 !endprocedure
