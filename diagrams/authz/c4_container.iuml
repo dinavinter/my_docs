@@ -23,6 +23,7 @@ AddElementTag("gigya_system",  $bgColor=$COLOR_B_6, $fontColor=$COLOR_NEUTRAL, $
 AddElementTag("client_system", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_4 )
 AddElementTag("customer", $bgColor=$COLOR_A_6, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_6)
 AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_7)
+AddElementTag("external_oauth_system", $bgColor=$COLOR_A_2, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_7)
 
 ' 
 !procedure GAuthN_Container($name)
