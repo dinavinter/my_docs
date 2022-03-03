@@ -48,6 +48,13 @@ AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borde
     System_Ext(authz_b2b, "B2C/B AuthZ Provider", "Stores policies, roles, assets, also dynamic assets and roles.", $tags="gigya_system")
 '}
 
+' Boundary(authz_n, "Gigya Authn"){
+   System(idp_s, "IDP Authentication ", "External Providees,provides authentication and identifications", $tags="external_system")
+   Container(idp_c, "IDP Authentication ", "Container: Https/ OAuth", "External Providees,provides authentication and identifications", $tags="external_system")
+    Container(gauth_c, "User Auth", "Container: Https/ OAuth", "Exposes API that supports user registration and authentication", ", $tags="gigya_system")
+    System(gauth_s, "User Auth", "Exposes API that supports user registration and authentication", ", $tags="gigya_system")
+
+'}
 
 ' Boundary(enduser, "Customers"){
   
