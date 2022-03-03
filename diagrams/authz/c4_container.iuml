@@ -29,13 +29,14 @@ AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borde
 Container($name, "User AuthN", "Container: Https/ Json", "Exposes API that supports user registration and authentication", $tags="gigya_system")
 !endprocedure
 
+!procedure OAuth_Container($name, $t ="oauth_system")
+    Container($name, "OAuth Service", "Container: Https/ OAuth", "Exposes API that provides tokens with information about the user identity and permissions", $tags=$t)
+!endprocedure
+
 !procedure GOAuth_Container($name)
     OAuth_Container($name , $tags="gigya_system")
 !endprocedure
 
-!procedure OAuth_Container($name, $t ="oauth_system")
-    Container($name, "OAuth Service", "Container: Https/ OAuth", "Exposes API that provides tokens with information about the user identity and permissions", $tags=$t)
-!endprocedure
 
 !procedure EIDP_Container($name, $t ="external_oauth_system")
    Container($name, "IDP Authentication ", "Container: Https/ OAuth", "External Providees,provides authentication and identifications", $tags=$t")
