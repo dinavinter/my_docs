@@ -49,10 +49,10 @@ AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borde
 '}
 
 ' Boundary(authz_n, "Gigya Authn"){
-   System(idp_s, "IDP Authentication ", "External Providees,provides authentication and identifications", $tags="external_system")
-   Container(idp_c, "IDP Authentication ", "Container: Https/ OAuth", "External Providees,provides authentication and identifications", $tags="external_system")
-    Container(gauth_c, "User Auth", "Container: Https/ OAuth", "Exposes API that supports user registration and authentication", ", $tags="gigya_system")
-    System(gauth_s, "User Auth", "Exposes API that supports user registration and authentication", ", $tags="gigya_system")
+
+   System(idp, "IDP Authentication ", "External Providees,provides authentication and identifications", $tags="external_system")
+   System(gauth, "User Auth", "Exposes API that supports user registration and authentication",   $tags="external_system")
+    System(oauth, "OAuth Service", "Exposes API that provides tokens with information about the user identity and permissions", $tags="gigya_system")
 
 '}
 
