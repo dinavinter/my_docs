@@ -65,8 +65,30 @@ AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borde
     Person(role_expert, "Role Expert", "A business implementor of the application.", $tags="employee")
     Person(support, "Customer Support", "Support customer requests", $tags="employee")
  '}
-
  
+!procedure GAuthN_Container($name)
+Container($name, "User AuthN", "Container: Https/ Json", "Exposes API that supports user registration and authentication", $tags="gigya_system")
+!endprocedure
+
+!procedure GOAuth_Container($name)
+    OAuth_Container($name , $tags="gigya_system")
+!endprocedure
+
+!procedure OAuth_Container($name, $t ="oauth_system")
+    Container($name, "OAuth Service", "Container: Https/ OAuth", "Exposes API that provides tokens with information about the user identity and permissions", $tags=$t)
+!endprocedure
+
+!procedure EIDP_Container($name, $t ="external_oauth_system")
+   Container($name, "IDP Authentication ", "Container: Https/ OAuth", "External Providees,provides authentication and identifications", $tags=$t")
+!endprocedure
+
+!procedure Spa_Container($name, $t ="client_system")
+    Container($name, "SPA", "Container: ReactJS / JavaScript", "Runs application code in customer's browser", $tags= $t)
+!endprocedure
+
+!procedure Shop_Container($name, $t ="client_system")
+    Container($name, "Shopping App", "Container: Spring Boot / Java", "Exposes API for shopping and persists shopping cart state", $tags=$t)
+!endprocedure
 
 !procedure Authenticate($persona, $system)
 BiRel($persona, $system, "Authenticaticate") 
@@ -75,5 +97,6 @@ BiRel($persona, $system, "Authenticaticate")
   
 !procedure Gigya_AuthN($persona)
 Authenticate($persona, gauth) 
-!endprocedure 
+!endprocedure
+
 @enduml
