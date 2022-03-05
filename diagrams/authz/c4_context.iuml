@@ -1,0 +1,6 @@
+Person_Ext(customer, "Customer", "A customer wanting to buy a horrendous hat")
+
+System(site, "eComm System", "Displays hats for sale, takes orders and payments")
+System(fulfil, "Fulfilment System", "Fulfilment system that tracks inventory and ships orders to customers")
+
+System_Ext(payments, "Payment Gateway", "Provides payment service") 
