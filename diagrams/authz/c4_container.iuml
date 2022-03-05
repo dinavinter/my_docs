@@ -34,6 +34,10 @@ AddElementTag("oauth_service", $bgColor=RoyalBlue, $fontColor=$COLOR_NEUTRAL, $b
 !procedure OAuth_Container($name,$title="OAuth Service",$att="Container: Https/ OAuth", $desc="Provides user tokens with information about the user identity and permissions", $tags="oauth_service")
     Container($name, $title,$att,  $desc, $tags=$tags)
 !endprocedure
+ 
+!procedure AuthN_Container($name,$title="User AuthN"",$att="Container: Https/Json", $desc="Exposes API that provides user registration and authentication", $tags="gigya_system")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
 
 !procedure EIDP_Container($name, $title="IDP Authentication",$att="Container: Https/ OAuth", $desc="External Providees,provides authentication and identifications", $tags="external_oauth_service")
    Container_Ext($name,$title, $att, $desc, $tags=$tags)
