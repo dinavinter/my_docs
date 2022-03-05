@@ -36,10 +36,10 @@ AddElementTag("external_oauth_system", $bgColor=$COLOR_A_2, $fontColor=$COLOR_NE
 Person_Ext($name, "Customer", "A customer wanting to buy a horrendous hat")
 !endprocedure
 
-!procedure OAuth_System($name,$title="OAuth Service", $desc="Exposes API that provides tokens with information about the user identity and permissions", $tags="oauth_system")
+!procedure OAuth_System($name,$title="OAuth Service", $desc="Provides user tokens with information about the user identity and permissions", $tags="oauth_system")
     System(site, ,$title, $desc, $tags =$tags)
 !endprocedure
-!procedure OAuthN_System($name,$title="OAuthN Service", $desc="Exposes API that supports user registration and authentication", $tags="oauth_system")
+!procedure AuthN_System($name,$title="OAuthN Service", $desc="Supports user registration and authentication", $tags="oauth_system")
     System(site, ,$title, $desc, $tags =$tags)
 !endprocedure
 !procedure Ecomm_System($name,$title="eComm System", $desc="Displays hats for sale, takes orders and payments", $tags="client_system")
