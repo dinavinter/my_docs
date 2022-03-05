@@ -35,7 +35,7 @@ AddElementTag("oauth_service", $bgColor=RoyalBlue, $fontColor=$COLOR_NEUTRAL, $b
     Container($name, $title,$att,  $desc, $tags=$tags)
 !endprocedure
  
-!procedure AuthN_Container($name,$title="User AuthN"",$att="Container: Https/Json", $desc="Exposes API that provides user registration and authentication", $tags="gigya_system")
+!procedure AuthN_Container($name,$title="User AuthN",$att="Container: Https/Json", $desc="Exposes API that provides user registration and authentication", $tags="gigya_system")
     Container($name, $title,$att,  $desc, $tags=$tags)
 !endprocedure
 
