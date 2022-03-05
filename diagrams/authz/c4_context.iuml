@@ -4,3 +4,58 @@ System(site, "eComm System", "Displays hats for sale, takes orders and payments"
 System(fulfil, "Fulfilment System", "Fulfilment system that tracks inventory and ships orders to customers")
 
 System_Ext(payments, "Payment Gateway", "Provides payment service") 
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!$COLOR_A_6 = "#03256C"
+!$COLOR_A_7 = "#1768AC"
+!$COLOR_A_5 = "#558776"
+!$COLOR_A_5 = "#558776"
+!$COLOR_A_4 = "#b35806"
+!$COLOR_A_3 = "#e08214"
+!$COLOR_A_2 = "#fdb863"
+!$COLOR_A_1 = "#fee0b6"
+!$COLOR_NEUTRAL = "#f7f7f7"
+!$COLOR_B_1 = "#d8daeb"
+!$COLOR_B_2 = "#b2abd2"
+!$COLOR_B_3 = "#8073ac"
+!$COLOR_B_4 = "#542788"
+!$COLOR_B_5 = "#2d004b"
+!$COLOR_B_6 = "#9B72AA" 
+!$COLOR_REL_LINE = "#8073ac"
+!$COLOR_REL_TEXT = "#8073ac"
+
+AddElementTag("gigya_system",  $bgColor=$COLOR_B_6, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_6)
+AddElementTag("client_system", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_4 )
+AddElementTag("customer", $bgColor=$COLOR_A_6, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_6)
+AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_7)
+AddElementTag("external_oauth_system", $bgColor=$COLOR_A_2, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_7)
+
+' 
+!procedure Customer($name)
+Person_Ext($name, "Customer", "A customer wanting to buy a horrendous hat")
+!endprocedure
+
+!procedure OAuth_System($name,$title="OAuth Service", $desc="Exposes API that provides tokens with information about the user identity and permissions", $tags="oauth_system")
+    System(site, ,$title, $desc, $tags =$tags)
+!endprocedure
+!procedure OAuthN_System($name,$title="OAuthN Service", $desc="Exposes API that supports user registration and authentication", $tags="oauth_system")
+    System(site, ,$title, $desc, $tags =$tags)
+!endprocedure
+!procedure Ecomm_System($name,$title="eComm System", $desc="Displays hats for sale, takes orders and payments", $tags="client_system")
+    System(site, ,$title, $desc, $tags =$tags)
+
+!endprocedure
+!procedure Payment_System($name,$title="Payment Gateway", $desc="Provides payment service", $tags="client_system")
+  System_Ext($name, $title, $desc, $tags =$tags) 
+endprocedure
+!procedure Fulfilment_System($name, $title="Fulfilment System",$desc="Fulfilment system that tracks inventory and ships orders to customers", $tags="client_system")
+  System_Ext($name, $title, $desc, $tags =$tags) 
+endprocedure
+!procedure EIDP_System($name, $title="IDP Authentication",$desc="External providers that provides authentication and identifications", $tags ="external_oauth_system")
+  System_Ext($name, $title, $desc, $tags =$tags) 
+!endprocedure
+ 
+ 
+
+@enduml
