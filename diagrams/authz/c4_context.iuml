@@ -1,10 +1,4 @@
-Person_Ext(customer, "Customer", "A customer wanting to buy a horrendous hat")
-
-System(site, "eComm System", "Displays hats for sale, takes orders and payments")
-System(fulfil, "Fulfilment System", "Fulfilment system that tracks inventory and ships orders to customers")
-
-System_Ext(payments, "Payment Gateway", "Provides payment service") 
-@startuml
+ @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 !$COLOR_A_6 = "#03256C"
@@ -39,19 +33,24 @@ Person_Ext($name, "Customer", "A customer wanting to buy a horrendous hat")
 !procedure OAuth_System($name,$title="OAuth Service", $desc="Provides user tokens with information about the user identity and permissions", $tags="oauth_system")
     System(site, ,$title, $desc, $tags =$tags)
 !endprocedure
+
 !procedure AuthN_System($name,$title="OAuthN Service", $desc="Supports user registration and authentication", $tags="oauth_system")
     System(site, ,$title, $desc, $tags =$tags)
 !endprocedure
+
 !procedure Ecomm_System($name,$title="eComm System", $desc="Displays hats for sale, takes orders and payments", $tags="client_system")
     System(site, ,$title, $desc, $tags =$tags)
 
 !endprocedure
+
 !procedure Payment_System($name,$title="Payment Gateway", $desc="Provides payment service", $tags="client_system")
   System_Ext($name, $title, $desc, $tags =$tags) 
-endprocedure
+!endprocedure
+
 !procedure Fulfilment_System($name, $title="Fulfilment System",$desc="Fulfilment system that tracks inventory and ships orders to customers", $tags="client_system")
   System_Ext($name, $title, $desc, $tags =$tags) 
-endprocedure
+!endprocedure
+
 !procedure EIDP_System($name, $title="IDP Authentication",$desc="External providers that provides authentication and identifications", $tags ="external_oauth_system")
   System_Ext($name, $title, $desc, $tags =$tags) 
 !endprocedure
