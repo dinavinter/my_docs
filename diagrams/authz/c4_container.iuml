@@ -1,0 +1,85 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!$COLOR_A_6 = "#03256C"
+!$COLOR_A_7 = "#1768AC"
+!$COLOR_A_5 = "#558776"
+!$COLOR_A_5 = "#558776"
+!$COLOR_A_4 = "#b35806"
+!$COLOR_A_3 = "#e08214"
+!$COLOR_A_2 = "#fdb863"
+!$COLOR_A_1 = "#fee0b6"
+!$COLOR_NEUTRAL = "#f7f7f7"
+!$COLOR_B_1 = "#d8daeb"
+!$COLOR_B_2 = "#b2abd2"
+!$COLOR_B_3 = "#8073ac"
+!$COLOR_B_4 = "#542788"
+!$COLOR_B_5 = "#2d004b"
+!$COLOR_B_6 = "#9B72AA" 
+!$COLOR_REL_LINE = "#8073ac"
+!$COLOR_REL_TEXT = "#8073ac"
+
+ AddElementTag("client_system", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_4 )
+AddElementTag("customer", $bgColor=$COLOR_A_6, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_6)
+AddElementTag("employee", $bgColor=$COLOR_A_7, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_A_7) 
+ AddElementTag("client_system_fronted", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_4)
+AddElementTag("client_system_backend", $bgColor=$COLOR_B_5, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_5)
+AddElementTag("client_system_backend_or_fronted", $bgColor=$COLOR_B_4|$COLOR_B_5, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_5)
+AddElementTag("external_oauth_service", $bgColor=CornflowerBlue, $fontColor=$COLOR_NEUTRAL, $borderColor=CornflowerBlue)
+AddElementTag("oauth_service", $bgColor=RoyalBlue, $fontColor=$COLOR_NEUTRAL, $borderColor=RoyalBlue)
+ AddElementTag("gigya_system", $bgColor=SteelBlue, $fontColor=$COLOR_NEUTRAL, $borderColor=SteelBlue)
+ 
+ 
+
+!procedure OAuth_Container($name,$title="OAuth Service",$att="Container: Https/ OAuth", $desc="Provides user tokens with information about the user identity and permissions", $tags="oauth_service")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+ 
+!procedure AuthN_Container($name,$title="User AuthN",$att="Container: Https/Json", $desc="Exposes API that provides user registration and authentication", $tags="gigya_system")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+!procedure EIDP_Container($name, $title="IDP Authentication",$att="Container: Https/ OAuth", $desc="External Providees,provides authentication and identifications", $tags="external_oauth_service")
+   Container_Ext($name,$title, $att, $desc, $tags=$tags)
+!endprocedure
+
+
+!procedure OAuth_Client_Container($name,$title="OAuth Client",$att="Container: javascript", $desc="Provides oauth client functunallity", $tags="oauth_service")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+!procedure OAuth_Frame($name,$title="OAuth Client Frame",$att="Container: javascript", $desc="Provides oauth client functunallity in customer's browser", $tags="oauth_service")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+!procedure OAuth_Token_Container($name,$title="Token Service",$att="Container: Https/ OAuth", $desc="Exposes API that provides OAuth tokens", $tags="oauth_service")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+!procedure OAuth_Token_Exchange_Container($name,$title="Token Exchange",$att="Container: Https/ OAuth", $desc="Exposes API that provides supports exchanging gigya session with represntive OAuth token", $tags="oauth_service")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+!procedure OAuth_Code_Exchange_Container($name,$title="Code Exchange",$att="Container: Https/ OAuth", $desc="Exposes API that provides supports exchanging code with with the represntive token", $tags="oauth_service")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+!procedure OAuth_Info_Container($name,$title="Token Info",$att="Container: Https/ OAuth", $desc="Exposes API that provides information about the token", $tags="oauth_service")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+ 
+
+!procedure UM_Container($name,$title="Gigya User Management",$att="Container: Https/ OAuth", $desc="Stores all of the core information about customers, accounts, rate, favorites etc.", $tags="gigya_system")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+
+!procedure Spa_Container($name,$title="SPA",$att="Container: ReactJS / JavaScript", $desc= "Runs application code in customer's browser", $tags="client_system_fronted")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+!procedure Shop_Container($name,$title="Application Api",$att="Container: Spring Boot / Java", $desc= "Exposes API for shopping and persists shopping cart state", $tags="client_system_backend")
+    Container($name, $title,$att,  $desc, $tags=$tags)
+!endprocedure
+
+@enduml
