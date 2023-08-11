@@ -1,0 +1,78 @@
+@startuml
+skinparam monochrome true
+
+(*) --> "
+{{
+salt
+{+
+title Communication Preferences
+  --
+  == Channels
+ 
+   Email:  | { "lea@gmail.com" | <color:blue> edit... }
+   SMS:  | {  <color:blue> add... }
+  
+ 
+  --
+  === Newsletter
+  [] <color:gray>SMS 
+  [X] Email 
+  --
+  
+  
+  === Deals
+  [] <color:gray>SMS 
+  [] Email 
+}
+}}
+" as choose
+ 
+ choose -right-> "
+ {{
+ salt
+ {+
+ <b> Enter your phone number
+ "             "
+ [Send]
+ }
+ }}
+ " as send
+ send -right-> "
+ {{
+ salt
+ {+
+ <b> Enter Code
+ "             "
+ [Submit]
+
+ }
+ }}
+ " as submit
+ 
+ submit -down-> "
+ {{
+ salt
+ {+
+ title Communication Preferences
+   --
+   == Channels
+  
+    Email:  | { "lea@gmail.com" | <color:blue> edit... }
+    SMS:  | { "+97254355666" | <color:blue> add... }
+   
+  
+   --
+   === Newsletter
+   [] SMS 
+   [X] Email 
+   --
+   
+   
+   === Deals
+   [] SMS 
+   [] Email 
+ }
+ }}
+ "
+ @enduml
+ 

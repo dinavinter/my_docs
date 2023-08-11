@@ -1,0 +1,412 @@
+@startuml
+ skinparam monochrome true
+
+!$sub= "Newsletter"
+!$sub2= "deals"
+  
+
+ ' *************** subscription
+
+
+!$newsletter = { 
+ "type":"Newsletter", 
+ "fields": [
+'{"name":"name", "value":"Dudi"  }, 
+{"name":"frequency", "value":"daily" , "options":["daily" , "weekly"]} ,
+{"name":"language", "value":"French"} 
+  ] ,
+  "channel": { "value":"null" , "options":["email" , "phone", "whatsapp", "telegram", "address"]},
+  "terms":  [
+  {"name":"terms_news", "value":"true"}
+  ]
+}
+
+
+!$deals = { 
+ "type":"deals",
+ "fields": [
+{"name":"name", "value":"Davidus"  }, 
+{"name":"frequency", "value":"daily" , "options":["daily" , "weekly", "monthly"]} ,
+{"name":"language", "value":"Spanish"} ,
+{"name":"phone", "value":"06745453"  }  , 
+{"name":"interests", "value":"Pets"} 
+  ] ,
+  "channel": { "value":"null" , "options":["email" ,   "telegram" ]},
+  "terms":  [
+  {"name":"terms_deals", "value":"true"}
+  ]
+}
+
+  
+ !procedure  subscription($subscription)  
+          contact_details(null, $subscription.channel.options)   
+
+          {^"                   <b>$subscription.type Preferences" 
+           fields($subscription.fields)  
+           fields($subscription.terms)   
+        } 
+        
+        channel_details($subscription.channel.options)  
+
+ !endprocedure 
+ 
+' *************** contacts
+
+ !channel_details = { 
+     "fields": [
+     {"name":"email", "value":"david@mail.com"  }     , 
+       {"name":"phone", "value":"06745453"  }  
+ ] }
+ !$contact_email = { 
+     "type":"email",
+     "fields": [
+     {"name":"email", "value":"david@mail.com"  }
+     , 
+    {"name":"terms_email", "value":"true"} ,
+    {"name":"terms_share", "value":"true"}  
+ ] }
+ 
+ !$contact_phone = { 
+  "type":"phone", 
+  "fields": [
+  {"name":"phone", "value":"06745453"  }  , 
+ {"name":"terms_phone", "value":"true"} ,
+ {"name":"terms_share", "value":"true"}  
+ ],
+ "verification": {
+   "type":"code"
+   }
+  }
+ 
+ !$contact_whatsapp = { 
+  "type":"whatsapp", 
+  "fields": [
+  {"name":"phone", "value":"06745453"  },
+  {"name":"token", "value":"xsdsfff"  } , 
+ {"name":"terms_whatsapp", "value":"true"} ,
+ {"name":"terms_share", "value":"true"}  
+ ] }
+ 
+ !$contact_telegram = { 
+  "type":"telegram",
+  "fields": [
+  {"name":"nickname", "value":"niciNock"  },
+  {"name":"group", "value":"hotnews"  } , 
+ {"name":"terms_share", "value":"true"}  
+ ] }
+ 
+ 
+ !$contact_address = { 
+  "type":"address", 
+  "fields": [
+  {"name":"city", "value":"Miami"  },
+  {"name":"street", "value":"Avenue "  } , 
+  {"name":"terms_shipping", "value":"true"}  
+ ] }
+ 
+ 
+ 
+ !procedure goto_contact($from, $contact, $other_options)
+   !$choosevar= choose+$contact.type  
+   $from-down->"
+                          {{
+                          salt
+                          {+
+                            contact_options($contact, $other_options)
+                          }
+                          }}
+                
+                          " as  $choosevar  
+'   -down-> "
+'           {{
+'           salt
+'           {+
+'             contact($contact)
+'           }
+'           }}
+' 
+'           " as $contact.type
+ 
+ !endprocedure
+ 
+ 
+  
+ !procedure  contact_options($contact, $options)
+     !local $choice= "Choose Channel"
+     !if $contact != null 
+        !$choice = $contact.type 
+     !endif
+      {* $choice 
+         $choice |  
+                !foreach $o in $options
+                     !if $o == $contact.type
+                      <b> $o |
+                      !else
+                        $o |
+                     !endif
+                      
+                 !endfor  
+    }  
+    
+
+  !endprocedure
+  
+    !procedure  contact($contact)  
+      {^"<b> [$contact.type]"  
+        {{  fields($contact.fields)  }}  
+     }
+  
+    !endprocedure
+
+  !procedure  contact_details($contact, $options)  
+    {^"<b>Channel  Preferences" 
+         contact_options($contact, $options)
+         
+
+        !if $contact != null
+         {{  fields($contact.fields)  }}  
+        !else
+                   ...
+                   ...
+                   ...
+      !endif
+      }
+
+  !endprocedure
+ 
+   !procedure  channel_details($contact)  
+     {^"<b>Channel  Details" 
+      
+       Email:  | { "lea@gmail.com" | { [X] verified } }
+       Phone Number:  | { "+97254355666" | { [ ] verified } }
+
+        }
+ 
+   !endprocedure
+  
+
+ 
+' ------------- end contacts
+
+
+ !$channel =null 
+ !$contact =null 
+
+ 
+
+!unquoted procedure SALT($x, $asVar = null)
+ !local $var=$x   
+!if $asVar != null
+    !local $var=$asVar   
+!endif 
+"{{
+salt
+skinparam dpi 120 
+%invoke_procedure("_"+$x)
+}}" as $var
+!endprocedure
+
+ 
+!unquoted procedure draw($x) 
+   %invoke_procedure("_"+$x) 
+!endprocedure
+
+
+ 
+' *************** general fields
+
+ 
+  !procedure option($option, $value) 
+     !if $option == $value
+        (X)$option 
+        !else
+        ()$option
+     !endif  
+  !endprocedure
+   
+  
+  !procedure checkbox($value) 
+     !if $value
+        [X] 
+        !else
+        []
+     !endif  
+  !endprocedure
+ 
+    !procedure text($title, $field )
+          $title | "     $field     "
+     !endprocedure
+
+  !procedure  field( $field)  
+     !if %function_exists($field.name)
+         %invoke_procedure($field.name, $field)
+         !else
+         text($field.name, $field.value)
+         
+      !endif   
+     !endprocedure 
+     
+ !procedure fields( $field)  
+       !foreach $f in $field
+             field($f)  
+       !endfor
+ !endprocedure 
+  
+!procedure wizard($tab=newsletter, $tabs)
+{+
+    {/ <b>$tab | Fullscreen | Behavior | Saving } 
+        draw($tab)
+    }
+}
+
+!endprocedure
+' *************** specific fields
+
+ !procedure  frequency($frequency)  
+     Frequency | { 
+              !foreach $o in $frequency.options
+                        !if $o == $contact
+                          (X)$o |
+                         !else
+                           ()$o |
+                        !endif
+                         
+              !endfor  
+            }  
+ !endprocedure
+  
+  !procedure name($field)
+       text(Name ,$field.value)
+  !endprocedure 
+  
+    !procedure email($field)
+         Email | "$field.value"
+    !endprocedure  
+    !procedure phone($field)
+             Phone | "$field.value"
+   !endprocedure  
+   
+   !procedure language($field)
+       Language | "$field.value"
+  !endprocedure
+    
+  !procedure  terms_news($field)  
+       checkbox($field.value) I agree to get spam 
+  !endprocedure 
+  
+  !procedure  terms_deals($field)  
+       checkbox($field.value) I agree to get targeted campaigns
+       checkbox($field.value) I agree to collect anonymous data
+  !endprocedure
+  
+  !procedure  terms_phone($field)  
+       checkbox($field.value) Agree to get sms
+  !endprocedure
+    !procedure  terms_whatsapp($field)  
+         checkbox($field.value) I agree to save my WAPP details
+    !endprocedure
+
+  !procedure  terms_email($field)  
+         checkbox($field.value) Agree to get emails 
+  !endprocedure
+    
+   !procedure  terms_share($field)  
+           checkbox($field.value) Agree to share my data 
+   !endprocedure
+  
+   !procedure terms_shipping($field)  
+      checkbox($field.value)  I agree to the shipment terms of service
+  !endprocedure
+ 
+  
+ 
+  !procedure  lite($subscriptions)
+    "
+              {{
+              salt
+              {+
+               <b>Communication Preferences  
+                subscription($subscriptions) 
+                 [   Submit   ]
+              }
+             }}
+   
+             " as $subscriptions.type
+  
+  !endprocedure
+  
+  
+!procedure  _codeVerification()  
+{+ 
+   {
+    {^"Phone Verification"
+       [Send code to my phone [***567]]
+      <b> Enter Code
+      "                "
+      [Submit] 
+      }
+  }
+}
+!endprocedure  
+
+!procedure _thanks()
+{+ 
+    {
+  
+         <b>Thank You For Subscribing! 
+        [Ok]
+    }
+ 
+}
+!endprocedure
+
+!procedure _choose()
+ {+  
+     (*)
+ } 
+!endprocedure
+
+
+!procedure _subscribe()
+ {+  
+     [Subscribe to Newsletter]
+ } 
+!endprocedure
+
+!procedure  subscribe($subscription)
+!local  $var=Subscribe+$subscription 
+  "
+  {{
+  salt
+  {+ 
+  [Subscribe to $subscription]
+  }
+  }}
+  " as $var  
+!endprocedure
+
+skinparam monochrome true
+
+title Channel Verification
+left to right direction
+
+
+ !$channel_options=  $newsletter.channel.options  
+  (*)--right->lite($newsletter) 
+  
+ -down-> SALT(choose) 
+  goto_contact(choose, $contact_phone, $channel_options   )   
+  -down->  SALT(codeVerification)   
+  goto_contact(choose,$contact_email, $channel_options ) 
+'  goto_contact(choose,$contact_whatsapp, $channel_options ) 
+'  goto_contact(choose,$contact_telegram, $channel_options ) 
+'  goto_contact(choose,$contact_address, $channel_options ) 
+' !$channel_options=  $deals.channel.options  
+
+   -down-> SALT(thanks)      
+
+' (*)-left->subscribe(Deals)  
+'  -left->lite($deals) 
+
+'  -down-> SALT(choose) 
+@enduml
